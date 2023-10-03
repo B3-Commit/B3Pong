@@ -18,8 +18,8 @@ public class Ball : MonoBehaviour
 
         var rigidBody = GetComponent<Rigidbody2D>();
 
-        float x = Random.Range(4f, 5f);
-        float y = 5.0f - (float)(System.Math.Sqrt(System.Math.Abs(x)));
+        float x = Random.Range(0, 2) == 0 ? -5.0f : 5.0f;
+        float y = 0.01f * (float)Random.Range(0, 500);
 
         rigidBody.velocity = new Vector2(x, y);
     }
