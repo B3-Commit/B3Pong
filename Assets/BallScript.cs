@@ -9,12 +9,18 @@ public class Ball : MonoBehaviour
     // Start is called before the first frame update
 
     public float velocity = 5.0f;
+    private AudioSource audioSource;
+
     void Start()
     {
         Debug.Log("start");
 
         // var particleSystem = GetComponent<ParticleSystem>();
         // particleSystem.stop();
+
+        audioSource = GetComponent<AudioSource>();
+        // Hack to remove first silent part of the audio clip
+        audioSource.time = GetComponent<AudioSource>().clip.length * .15f;
 
         var rigidBody = GetComponent<Rigidbody2D>();
 
@@ -41,9 +47,10 @@ public class Ball : MonoBehaviour
         }
     }
 
-    // void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     var particleSystem = GetComponent<ParticleSystem>();
-    //     particleSystem.Play();
-    // }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        audioSource.Play(0);
+        // var particleSystem = GetComponent<ParticleSystem>();
+        // particleSystem.Play();
+    }
 }
