@@ -8,6 +8,9 @@ public class PlayerScript : MonoBehaviour
     public KeyCode down = KeyCode.DownArrow;
     public KeyCode left = KeyCode.LeftArrow;
     public KeyCode right = KeyCode.RightArrow;
+    
+    public int playerIndex = 0;
+
     public float angularAcceleration = 1.0f;
 
     [SerializeField] float speed = 8.0f;
