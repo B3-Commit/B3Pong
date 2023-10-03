@@ -5,7 +5,7 @@ using TMPro;
 
 public class GoalScript : MonoBehaviour
 {
-    private int score = 0;
+    private int score = -2;
     public GameObject scoreText;
 
     // Start is called before the first frame update
