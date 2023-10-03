@@ -50,7 +50,7 @@ public class Ball : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         audioSource.Play(0);
-        // var particleSystem = GetComponent<ParticleSystem>();
-        // particleSystem.Play();
+        var particleSystem = GetComponent<ParticleSystem>();
+        particleSystem.Play();
     }
 }
