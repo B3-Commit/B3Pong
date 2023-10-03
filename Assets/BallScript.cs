@@ -28,9 +28,9 @@ public class Ball : MonoBehaviour
     void Update()
     {
         var rigidBody = GetComponent<Rigidbody2D>();
-        if (System.Math.Abs(rigidBody.velocity.x) < 1)
+        if (System.Math.Abs(rigidBody.velocity.x) < 2.0)
         {
-            float newX =  rigidBody.velocity.x < 0 ? -1f : 1f;
+            float newX =  rigidBody.velocity.x < 0 ? -2.0f : 2.0f;
             rigidBody.velocity = new Vector2(newX, rigidBody.velocity.y);
         }
 
