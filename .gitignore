@@ -21,6 +21,7 @@
 
 # Ignore local config files
 .vsconfig
+.vs/*
 
 # Include useful files from Packages
 !Packages/manifest.json
