@@ -9,10 +9,13 @@ public class PlayerScript : MonoBehaviour
     public KeyCode left = KeyCode.LeftArrow;
     public KeyCode right = KeyCode.RightArrow;
     
-    public float angularAcceleration = 1.0f;
-
-    [SerializeField] float speed = 8.0f;
-
+    public float angularAcceleration = 1.5f;
+    public float paddle_speed = 10.0f;
+    public const float Y_POSITION_LIMIT = 3.5f;
+    public const float ANGULAR_VELOCITY_LIMIT = 1e3f;
+    public const float POWER_UP_SIZE_INCR = 0.1f;
+    public const float TIME_SIZE_DECR = 3e-5f;
+    public const float DEFAULT_SIZE = 0.45f;
 
     // Start is called before the first frame update
     void Start()
@@ -29,40 +32,37 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.localScale.y > 0.45)
+        if (transform.localScale.y > DEFAULT_SIZE)
         {
             // Shrink back towards normal size
-            transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y - 0.00003f);
+            transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y - TIME_SIZE_DECR);
         }
         var rigidBody = GetComponent<Rigidbody2D>();
         if (Input.GetKey(up))
         {
             rigidBody.velocity = Vector2.zero;
-            transform.position += Vector3.up * speed * Time.deltaTime;            
+            transform.position += Vector3.up * paddle_speed * Time.deltaTime;            
         }
         if (Input.GetKey(down))
         {
             rigidBody.velocity = Vector2.zero;
-            transform.position += Vector3.down * speed * Time.deltaTime;
+            transform.position += Vector3.down * paddle_speed * Time.deltaTime;
         }
         if (Input.GetKey(left))
         {
             rigidBody.angularVelocity += angularAcceleration;
-            // transform.RotateAround(new Vector3(0, 0, 1), 0.01f);
         }
         if (Input.GetKey(right))
         {
             rigidBody.angularVelocity -= angularAcceleration;
-            // transform.RotateAround(new Vector3(0, 0, 1), -0.01f);
         }
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 3.5f), 0);
-        rigidBody.angularVelocity = Mathf.Clamp(rigidBody.angularVelocity, -1000f, 1000f);
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
+        rigidBody.angularVelocity = Mathf.Clamp(rigidBody.angularVelocity, -ANGULAR_VELOCITY_LIMIT, ANGULAR_VELOCITY_LIMIT);
         
     }
 
     public void GetPowerUp(PowerUp powerUp)
     {
-        Debug.Log("Increase board size");
-        transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y + 0.1f);
+        transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y + POWER_UP_SIZE_INCR);
     }
 }

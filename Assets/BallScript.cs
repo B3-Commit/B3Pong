@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public float velocity = 5.0f;
     public string lastTouch;
+    public const float MINIMUM_SPEED = 4.5f;
+    public const float MAXIMUM_SPEED = 20.0f;
     private AudioSource audioSource;
 
     void Start()
     {
-        Debug.Log("start");
-
         audioSource = GetComponent<AudioSource>();
         // Hack to remove first silent part of the audio clip
         audioSource.time = GetComponent<AudioSource>().clip.length * .15f;
@@ -27,16 +26,21 @@ public class Ball : MonoBehaviour
     void Update()
     {
         var rigidBody = GetComponent<Rigidbody2D>();
-        if (System.Math.Abs(rigidBody.velocity.x) < 2.0)
+
+        // To keep the flow going, there needs to be a minimum x velocity
+        if (System.Math.Abs(rigidBody.velocity.x) < MINIMUM_SPEED)
         {
-            float newX =  rigidBody.velocity.x < 0 ? -2.0f : 2.0f;
+            float newX =  rigidBody.velocity.x < 0 ? -MINIMUM_SPEED : MINIMUM_SPEED;
             rigidBody.velocity = new Vector2(newX, rigidBody.velocity.y);
         }
 
-        var magnitude = rigidBody.velocity.magnitude;
-        if (magnitude < 4.5)
+        var speed = rigidBody.velocity.magnitude;
+        if (speed < MINIMUM_SPEED)
         {
-            rigidBody.velocity = rigidBody.velocity / magnitude * velocity;
+            rigidBody.velocity = rigidBody.velocity / speed * MINIMUM_SPEED;
+        } else if (speed > MAXIMUM_SPEED)
+        {
+            rigidBody.velocity = rigidBody.velocity / speed * MAXIMUM_SPEED;
         }
     }
 

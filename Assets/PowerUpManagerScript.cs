@@ -5,6 +5,9 @@ using UnityEngine;
 public class PowerUpManagerScript : MonoBehaviour
 {
     public GameObject powerUpPrefab;
+    public const float Y_RANGE = 450;
+    public const float X_RANGE_MIN = 100;
+    public const float X_RANGE_MAX = 400;
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +29,8 @@ public class PowerUpManagerScript : MonoBehaviour
     Vector3 GetPosition()
     {
         // Get a centerboard position, but not too close to center line
-        float randY = 0.01f * Random.Range(-450, 450);
-        float randX = 0.01f * Random.Range(100, 450);
+        float randY = 0.01f * Random.Range(-Y_RANGE, Y_RANGE);
+        float randX = 0.01f * Random.Range(100, X_RANGE_MAX);
         if (Random.Range(0, 2) == 0) randX *= -1;
 
         return new Vector3(randX, randY, 0);

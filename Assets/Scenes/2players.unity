@@ -552,6 +552,10 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 3.84
       objectReference: {fileID: 0}
+    - target: {fileID: 7777212544448722063, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+      propertyPath: m_Mass
+      value: 2.6999998
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -908,7 +912,7 @@ GameObject:
   - component: {fileID: 1102762784}
   - component: {fileID: 1102762783}
   - component: {fileID: 1102762782}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bottom wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1251,6 +1255,10 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7777212544448722063, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+      propertyPath: m_Mass
+      value: 1.49175
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1268,7 +1276,7 @@ GameObject:
   - component: {fileID: 1515933357}
   - component: {fileID: 1515933356}
   - component: {fileID: 1515933359}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -608073265036686827}
   - component: {fileID: 7777212544448722063}
   - component: {fileID: 5390055308122362007}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
   left: 276
   right: 275
   angularAcceleration: 1
-  speed: 8
+  paddle_speed: 10
 --- !u!212 &-608073265036686827
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -140,7 +140,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4878597424553864963}
   m_Enabled: 1
-  m_Density: 1
+  m_Density: 15
   m_Material: {fileID: 6200000, guid: a98f556d5a74f744aac8f242739a55d5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
