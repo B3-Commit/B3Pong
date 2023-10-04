@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class GameManagerScript : MonoBehaviour
 {
     public static event Action NewGameEvent;
-    //public static event Action<int> GameFinished;
 
     [System.Serializable]
     public class Player
@@ -17,6 +16,7 @@ public class GameManagerScript : MonoBehaviour
         [HideInInspector]
         public int score = 0;
     }
+    public GameObject gameEndTextGameObj;
 
     public int maxScore = 5;
     public List<Player> playerScores;
@@ -39,10 +39,8 @@ public class GameManagerScript : MonoBehaviour
         playerScores[playerId].score++;
 
         if (playerScores[playerId].score >= maxScore)
-        {   
-            // TODO display winner
-            Debug.Log(String.Format("Player {0} won!", playerId + 1));
-            //GameFinished(playerId);
+        {
+            gameEndTextGameObj.GetComponent<TextMeshProUGUI>().text = String.Format("Player {0} Won", playerId + 1);
 
             this.Invoke(() => NewGameEvent(), 3f);
             isGameResetting = true;
