@@ -23,15 +23,24 @@ public class GameManagerScript : MonoBehaviour
     bool isGameResetting = false;
     bool isGoalAllowed = true;
 
+    public float slowMotionTimeScale = 0.1f;
+    private float startTimeScale;
+    private float startFixedDeltaTimeScale;
+
     // Start is called before the first frame update
     void Start()
     {
-        GoalScript.GoalEvent += onGoal;
-        NewGameEvent += onNewGameEvent;
+        GoalScript.GoalEvent += OnGoal;
+        NewGameEvent += OnNewGameEvent;
         MidlineScript.MidlineCrossed += () => isGoalAllowed = true;
+        GoalFieldScript.GoalFieldEnterEvent += OnGoalFieldEnter;
+        GoalFieldScript.GoalFieldExitEvent += OnGoalFieldExit;
+
+        startTimeScale = Time.timeScale;
+        startFixedDeltaTimeScale = Time.fixedDeltaTime;
     }
 
-    void onGoal(int playerId)
+    void OnGoal(int playerId)
     {
         // Do not allow goals during reset or from the same interaction
         if (isGameResetting) return;
@@ -48,15 +57,40 @@ public class GameManagerScript : MonoBehaviour
             isGameResetting = true;
         }
 
-        updateScoreBoard();
+        UpdateScoreBoard();
+        NormalTime();
     }
 
-    void onNewGameEvent()
+    void OnNewGameEvent()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void updateScoreBoard()
+    void OnGoalFieldEnter()
+    {
+        SlowTime();
+    }
+
+    void OnGoalFieldExit()
+    {
+        NormalTime();
+    }
+    
+    private void SlowTime()
+    {
+        GetComponent<AudioSource>().Play();
+        Time.timeScale = slowMotionTimeScale;
+        Time.fixedDeltaTime = startFixedDeltaTimeScale * slowMotionTimeScale;
+    }
+
+    private void NormalTime()
+    {
+        GetComponent<AudioSource>().Stop();
+        Time.timeScale = startTimeScale;
+        Time.fixedDeltaTime = startFixedDeltaTimeScale;
+    }
+
+    void UpdateScoreBoard()
     {
         foreach (var player in playerScores)
         {

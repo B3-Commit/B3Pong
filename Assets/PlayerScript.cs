@@ -13,20 +13,14 @@ public class PlayerScript : MonoBehaviour
     public float paddle_speed = 10.0f;
     public const float Y_POSITION_LIMIT = 3.5f;
     public const float ANGULAR_VELOCITY_LIMIT = 1e3f;
-    public const float POWER_UP_SIZE_INCR = 0.1f;
+    public const float POWER_UP_SIZE_INCR = 0.3f;
     public const float TIME_SIZE_DECR = 3e-5f;
-    public const float DEFAULT_SIZE = 0.45f;
+    public const float DEFAULT_SIZE = 1.5f;
 
     // Start is called before the first frame update
     void Start()
     {
 
-            var sprite = GetComponent<SpriteRenderer>().sprite.bounds;
-            var boxColl = GetComponent<BoxCollider2D>();
-            boxColl.size = sprite.size;
-            // boxColl.offset = sprite.center;
-            
-        
     }
 
     // Update is called once per frame

@@ -10,17 +10,6 @@ public class GoalScript : MonoBehaviour
     public int playerId;
     public static event Action<int> GoalEvent;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent<Ball>(out var ball))
