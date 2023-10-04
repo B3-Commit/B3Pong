@@ -15,6 +15,15 @@ public class PowerUpManagerScript : MonoBehaviour
     {
         // Trigger a timer for power-ups
         StartCoroutine(CreatePowerUp());
+        GameManagerScript.NewGameEvent += onNewGameEvent;
+    }
+
+    void onNewGameEvent()
+    {
+        foreach (Transform child in gameObject.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 
     IEnumerator CreatePowerUp()
@@ -22,7 +31,7 @@ public class PowerUpManagerScript : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(TIME_INTERVAL);
-            GameObject newPowerUp = Instantiate(powerUpPrefab, GetPosition(), Quaternion.identity);
+            GameObject newPowerUp = Instantiate(powerUpPrefab, GetPosition(), Quaternion.identity, gameObject.transform);
             PowerUp powerUpComponent = newPowerUp.GetComponent<PowerUp>();
             powerUpComponent.Activate();
         }
@@ -40,6 +49,6 @@ public class PowerUpManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

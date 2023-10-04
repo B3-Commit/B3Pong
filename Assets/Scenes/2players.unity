@@ -480,6 +480,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 152744335}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &781760436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 781760437}
+  m_Layer: 0
+  m_Name: PowerUpParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &781760437
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781760436}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 889352999}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &837000375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -591,6 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpPrefab: {fileID: 8710187806601812808, guid: 0567a6fabdefbbc40a2a73bc5db32399, type: 3}
+  powerUpContainer: {fileID: 781760436}
 --- !u!4 &889352999
 Transform:
   m_ObjectHideFlags: 0
@@ -603,7 +635,8 @@ Transform:
   m_LocalPosition: {x: -4.729644, y: 1.2642947, z: -0.021656372}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 781760437}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &990985294
@@ -1068,7 +1101,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2174547053709031328, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
       propertyPath: playerId
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2174547053709031328, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
       propertyPath: scoreText
@@ -1451,6 +1484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7722d54f285cb458acc249255bdf48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxScore: 5
   playerScores:
   - scoreText: {fileID: 730999552}
     score: 0
@@ -1658,6 +1692,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2174547053709031328, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
+      propertyPath: playerId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2174547053709031328, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
       propertyPath: scoreText
       value: 

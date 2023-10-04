@@ -19,7 +19,7 @@
 *.swp.*
 *.swo.*
 
-# *.sln
+*.sln
 *.suo
 *.csproj
 
