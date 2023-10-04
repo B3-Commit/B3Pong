@@ -21,22 +21,24 @@ public class GameManagerScript : MonoBehaviour
     public int maxScore = 5;
     public List<Player> playerScores;
     bool isGameResetting = false;
+    bool isGoalAllowed = true;
 
     // Start is called before the first frame update
     void Start()
     {
         GoalScript.GoalEvent += onGoal;
         NewGameEvent += onNewGameEvent;
+        MidlineScript.MidlineCrossed += () => isGoalAllowed = true;
     }
 
     void onGoal(int playerId)
     {
-        if(isGameResetting)
-        {
-            return;
-        }
+        // Do not allow goals during reset or from the same interaction
+        if (isGameResetting) return;
+        if (!isGoalAllowed) return;
 
         playerScores[playerId].score++;
+        isGoalAllowed = false;
 
         if (playerScores[playerId].score >= maxScore)
         {
@@ -61,6 +63,7 @@ public class GameManagerScript : MonoBehaviour
             player.scoreText.GetComponent<TextMeshProUGUI>().text = player.score.ToString();
         }
     }
+
     // Update is called once per frame
     void Update()
     {
