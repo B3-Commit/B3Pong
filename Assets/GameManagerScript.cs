@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -52,12 +53,7 @@ public class GameManagerScript : MonoBehaviour
 
     void onNewGameEvent()
     {
-        foreach (var player in playerScores)
-        {
-            player.score = 0;
-        }
-        updateScoreBoard();
-        isGameResetting = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void updateScoreBoard()

@@ -15,15 +15,6 @@ public class PowerUpManagerScript : MonoBehaviour
     {
         // Trigger a timer for power-ups
         StartCoroutine(CreatePowerUp());
-        GameManagerScript.NewGameEvent += onNewGameEvent;
-    }
-
-    void onNewGameEvent()
-    {
-        foreach (Transform child in gameObject.transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
     }
 
     IEnumerator CreatePowerUp()
