@@ -9,8 +9,6 @@ public class PlayerScript : MonoBehaviour
     public KeyCode left = KeyCode.LeftArrow;
     public KeyCode right = KeyCode.RightArrow;
     
-    public int playerIndex = 0;
-
     public float angularAcceleration = 1.0f;
 
     [SerializeField] float speed = 8.0f;
@@ -31,6 +29,11 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (transform.localScale.y > 0.45)
+        {
+            // Shrink back towards normal size
+            transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y - 0.00003f);
+        }
         var rigidBody = GetComponent<Rigidbody2D>();
         if (Input.GetKey(up))
         {
@@ -55,5 +58,11 @@ public class PlayerScript : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 3.5f), 0);
         rigidBody.angularVelocity = Mathf.Clamp(rigidBody.angularVelocity, -1000f, 1000f);
         
+    }
+
+    public void GetPowerUp(PowerUp powerUp)
+    {
+        Debug.Log("Increase board size");
+        transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y + 0.1f);
     }
 }

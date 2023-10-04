@@ -5,7 +5,7 @@ using TMPro;
 
 public class GoalScript : MonoBehaviour
 {
-    private int score = -2;
+    private int score = 0;
     public GameObject scoreText;
 
     // Start is called before the first frame update
@@ -22,7 +22,10 @@ public class GoalScript : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        score++;
-        scoreText.GetComponent<TextMeshProUGUI>().text = score.ToString();
+        if (collision.gameObject.TryGetComponent<Ball>(out var ball))
+        {
+            score++;
+            scoreText.GetComponent<TextMeshProUGUI>().text = score.ToString();
+        }
     }
 }
