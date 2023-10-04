@@ -19,9 +19,8 @@
 *.swp.*
 *.swo.*
 
-# Exclude package files (include if the package is essential)
-# Uncomment this if you want to ignore the folder, but it's often a good idea to version control your manifest.json
-#[Pp]ackages/
+# Ignore local config files
+.vsconfig
 
 # Include useful files from Packages
 !Packages/manifest.json
