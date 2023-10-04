@@ -29,38 +29,27 @@ public class PowerUp : MonoBehaviour
                 Debug.Log("Base Power-Up Right");
                 player = GameObject.Find("Player Right");
             }
-
-            //player.
         }
         Debug.Log("Base Power-Up end");
-
     }
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
-
         // Check if the collider object is a ball
         if (collider.gameObject.TryGetComponent<Ball>(out var ball))
         {
-
-            // Get ball x velocity to determine the player to get the powerup
-            float xVelocity = ball.GetComponent<Rigidbody2D>().velocity.x;
-            GameObject player;
-            if (xVelocity > 0)
+            GameObject player = GameObject.Find(ball.lastTouch);
+            if (player != null)
             {
-                player = GameObject.Find("Player Left");
+                player.GetComponent<PlayerScript>().GetPowerUp(this);
+                Debug.Log(ball.lastTouch + " triggered a power up!");
             }
-            else
-            {
-                player = GameObject.Find("Player Right");
-            }
-
-            player.GetComponent<PlayerScript>().GetPowerUp(this);
-        } else
+        }
+        else
         {
             Debug.Assert(false);
         }
-
+        // Destroy powerup
         Destroy(gameObject);
     }
 }

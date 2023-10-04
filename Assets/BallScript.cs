@@ -1,22 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using System.Math;
 
 public class Ball : MonoBehaviour
 {
-    // public Rigidbody2D rigidbody
-    // Start is called before the first frame update
-
     public float velocity = 5.0f;
+    public string lastTouch;
     private AudioSource audioSource;
 
     void Start()
     {
         Debug.Log("start");
-
-        // var particleSystem = GetComponent<ParticleSystem>();
-        // particleSystem.stop();
 
         audioSource = GetComponent<AudioSource>();
         // Hack to remove first silent part of the audio clip
@@ -30,7 +24,6 @@ public class Ball : MonoBehaviour
         rigidBody.velocity = new Vector2(x, y);
     }
 
-    // Update is called once per frame
     void Update()
     {
         var rigidBody = GetComponent<Rigidbody2D>();
@@ -52,5 +45,11 @@ public class Ball : MonoBehaviour
         audioSource.Play(0);
         var particleSystem = GetComponent<ParticleSystem>();
         particleSystem.Play();
+
+        // Save last touch
+        if (collision.gameObject.name is "Player Right" or "Player Left")
+        {
+            lastTouch = collision.gameObject.name;
+        }
     }
 }
