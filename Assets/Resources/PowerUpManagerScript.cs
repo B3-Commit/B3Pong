@@ -16,7 +16,7 @@ public class PowerUpManagerScript : MonoBehaviour
         BallEnlarge,
     }
 
-    List<int> typeProbabilityWeights = new () { 1, 0 };
+    List<int> typeProbabilityWeights = new () { 1, 1 };
     List<PowerUpType> weightedTypeList = new ();
 
     // Start is called before the first frame update
@@ -42,14 +42,13 @@ public class PowerUpManagerScript : MonoBehaviour
         {
             yield return new WaitForSeconds(TIME_INTERVAL);
 
-            //GameObject newPowerUp;
             switch (GetPowerUpType())
             {
                 case PowerUpType.PaddleEnlarge:
                     PaddleEnlargePowerUp.Create(GetPosition(), transform);
                     break;
                 case PowerUpType.BallEnlarge:
-                    Debug.LogError("Unknown power up ball enlarge");
+                    BallEnlargePowerUp.Create(GetPosition(), transform);
                     break;
                 default:
                     Debug.LogError("Unknown power up type");

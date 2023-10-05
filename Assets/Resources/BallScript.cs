@@ -9,6 +9,10 @@ public class Ball : MonoBehaviour
     public string lastTouch;
     public const float MINIMUM_SPEED = 4.5f;
     public const float MAXIMUM_SPEED = 20.0f;
+    public const float POWER_UP_SIZE_INCR = 2f;
+    public const float TIME_SIZE_DECR = 2e-3f;
+    public const float DEFAULT_SIZE = 4.0f;
+
     private AudioSource audioSource;
 
     void Start()
@@ -28,6 +32,12 @@ public class Ball : MonoBehaviour
     void Update()
     {
         var rigidBody = GetComponent<Rigidbody2D>();
+        if (transform.localScale.y > DEFAULT_SIZE)
+        {
+            // Shrink back towards normal size
+            transform.localScale -= new Vector3(TIME_SIZE_DECR, TIME_SIZE_DECR, 0);
+        }
+
 
         // To keep the flow going, there needs to be a minimum x velocity
         if (System.Math.Abs(rigidBody.velocity.x) < MINIMUM_SPEED)
@@ -56,6 +66,17 @@ public class Ball : MonoBehaviour
         if (collision.gameObject.name is "Player Right" or "Player Left")
         {
             lastTouch = collision.gameObject.name;
+        }
+    }
+    public void GetPowerUp(PowerUp powerUp)
+    {
+        if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.BallEnlarge)
+        {
+            transform.localScale += new Vector3(POWER_UP_SIZE_INCR, POWER_UP_SIZE_INCR, 0);
+        }
+        else
+        {
+            Debug.Assert(false, "Unknown power up hit ball");
         }
     }
 }

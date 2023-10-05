@@ -2044,16 +2044,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 604006424344353646, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: a98f556d5a74f744aac8f242739a55d5, type: 2}
-    - target: {fileID: 604006424344353646, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 604006424344353646, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
+      propertyPath: m_Mass
+      value: 0.98174775
       objectReference: {fileID: 0}
     - target: {fileID: 915301240017294634, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
       propertyPath: m_Name
@@ -2103,14 +2095,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8483450272033776094, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8483450272033776094, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: a98f556d5a74f744aac8f242739a55d5, type: 2}
     m_RemovedComponents:
     - {fileID: -6676513027007853480, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
     - {fileID: -5063641055756322584, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
