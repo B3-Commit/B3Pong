@@ -57,6 +57,13 @@ public class PlayerScript : MonoBehaviour
 
     public void GetPowerUp(PowerUp powerUp)
     {
-        transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y + POWER_UP_SIZE_INCR);
+        if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.PaddleEnlarge)
+        {
+            transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y + POWER_UP_SIZE_INCR);
+        } 
+        else
+        {
+            Debug.Assert(false, "Unknown power up hit player");
+        }
     }
 }

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3187972650572989426}
-  - component: {fileID: -7874060468782185201}
   - component: {fileID: -6043294204285574223}
   - component: {fileID: 7898908991499929706}
+  - component: {fileID: 2507191953428414360}
   m_Layer: 6
   m_Name: PaddleEnlargePrefab
   m_TagString: Untagged
@@ -34,18 +34,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7874060468782185201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8710187806601812808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c58e69018252e34dbac3a5d4ca3a347, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &-6043294204285574223
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -143,3 +131,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.48828125, y: 0.48828125}
   m_EdgeRadius: 0
+--- !u!114 &2507191953428414360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8710187806601812808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f302a624798f4344a4cef9b3e0a6a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerUpType: 0

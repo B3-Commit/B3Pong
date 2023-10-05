@@ -46,7 +46,7 @@ public class PowerUpManagerScript : MonoBehaviour
             switch (GetPowerUpType())
             {
                 case PowerUpType.PaddleEnlarge:
-                    PowerUp.Create(GetPosition(), transform);
+                    PaddleEnlargePowerUp.Create(GetPosition(), transform);
                     break;
                 case PowerUpType.BallEnlarge:
                     Debug.LogError("Unknown power up ball enlarge");
