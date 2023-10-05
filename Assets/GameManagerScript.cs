@@ -24,6 +24,7 @@ public class GameManagerScript : MonoBehaviour
     bool isGoalAllowed = true;
 
     public float slowMotionTimeScale = 0.1f;
+    public float normalTimeDelay = 0.05f;
     private float startTimeScale;
     private float startFixedDeltaTimeScale;
 
@@ -58,7 +59,8 @@ public class GameManagerScript : MonoBehaviour
         }
 
         UpdateScoreBoard();
-        NormalTime();
+        // Wait a short moment to trigger normal time
+        StartCoroutine(Utilities.WaitAndTriggerFunction(normalTimeDelay, NormalTime));
     }
 
     void OnNewGameEvent()

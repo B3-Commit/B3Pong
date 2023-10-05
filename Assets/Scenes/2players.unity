@@ -551,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5390055308122362007, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 3.84
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7777212544448722063, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
       propertyPath: m_Mass
@@ -1653,6 +1653,7 @@ MonoBehaviour:
   - scoreText: {fileID: 990985294}
     score: 0
   slowMotionTimeScale: 0.1
+  normalTimeDelay: 0.05
 --- !u!4 &1525306246
 Transform:
   m_ObjectHideFlags: 0
@@ -1998,6 +1999,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3416591974164447761, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
+      propertyPath: playerId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2174547053709031328, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
       propertyPath: playerId
       value: 1

@@ -7,7 +7,7 @@ public class PowerUpManagerScript : MonoBehaviour
     public GameObject powerUpPrefab;
     public const float Y_RANGE = 400;
     public const float X_RANGE_MIN = 100;
-    public const float X_RANGE_MAX = 400;
+    public const float X_RANGE_MAX = 450;
     public const float TIME_INTERVAL = 5f;
 
     // Start is called before the first frame update
