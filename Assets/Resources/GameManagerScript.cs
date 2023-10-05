@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
-    public static event Action NewGameEvent;
-
     [System.Serializable]
     public class Player
     {
@@ -31,14 +29,25 @@ public class GameManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GoalScript.GoalEvent += OnGoal;
-        NewGameEvent += OnNewGameEvent;
-        MidlineScript.MidlineCrossed += () => isGoalAllowed = true;
+        GoalScript.goalEvent += OnGoal;
+        MidlineScript.MidlineCrossed += EnableGoalAllowed;
         GoalFieldScript.GoalFieldEnterEvent += OnGoalFieldEnter;
         GoalFieldScript.GoalFieldExitEvent += OnGoalFieldExit;
 
         startTimeScale = Time.timeScale;
         startFixedDeltaTimeScale = Time.fixedDeltaTime;
+    }
+
+    private void EnableGoalAllowed() { isGoalAllowed = true; }
+
+    private void OnDestroy()
+    {
+        GoalScript.goalEvent -= OnGoal;
+        MidlineScript.MidlineCrossed -= EnableGoalAllowed;
+        GoalFieldScript.GoalFieldEnterEvent -= OnGoalFieldEnter;
+        GoalFieldScript.GoalFieldExitEvent -= OnGoalFieldExit;
+
+        NormalTime();
     }
 
     void OnGoal(int playerId)
@@ -54,7 +63,7 @@ public class GameManagerScript : MonoBehaviour
         {
             gameEndTextGameObj.GetComponent<TextMeshProUGUI>().text = String.Format("Player {0} Won", playerId + 1);
 
-            this.Invoke(() => NewGameEvent(), 3f);
+            this.Invoke(() => OnNewGameEvent(), 3f);
             isGameResetting = true;
         }
 
@@ -77,7 +86,7 @@ public class GameManagerScript : MonoBehaviour
     {
         NormalTime();
     }
-    
+
     private void SlowTime()
     {
         GetComponent<AudioSource>().Play();

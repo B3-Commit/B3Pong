@@ -1780,7 +1780,7 @@ MonoBehaviour:
   - scoreText: {fileID: 990985294}
     score: 0
   slowMotionTimeScale: 0.1
-  normalTimeDelay: 0.05
+  normalTimeDelay: 0.01
 --- !u!4 &1525306246
 Transform:
   m_ObjectHideFlags: 0
