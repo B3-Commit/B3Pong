@@ -10,9 +10,28 @@ public class PowerUpManagerScript : MonoBehaviour
     public const float X_RANGE_MAX = 450;
     public const float TIME_INTERVAL = 5f;
 
+    public enum PowerUpType
+    {
+        PaddleEnlarge = 0,
+        BallEnlarge,
+    }
+
+    List<int> typeProbabilityWeights = new () { 1, 0 };
+    List<PowerUpType> weightedTypeList = new ();
+
     // Start is called before the first frame update
     void Start()
     {
+        // Populate the weighted list based on the enum values and corresponding weights
+        for (int i = 0; i < typeProbabilityWeights.Count; i++)
+        {
+            PowerUpType type = (PowerUpType)i;
+            for (int j = 0; j < typeProbabilityWeights[i]; j++)
+            {
+                weightedTypeList.Add(type);
+            }
+        }
+
         // Trigger a timer for power-ups
         StartCoroutine(CreatePowerUp());
     }
@@ -22,9 +41,20 @@ public class PowerUpManagerScript : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(TIME_INTERVAL);
-            GameObject newPowerUp = Instantiate(powerUpPrefab, GetPosition(), Quaternion.identity, gameObject.transform);
-            PowerUp powerUpComponent = newPowerUp.GetComponent<PowerUp>();
-            powerUpComponent.Activate();
+
+            //GameObject newPowerUp;
+            switch (GetPowerUpType())
+            {
+                case PowerUpType.PaddleEnlarge:
+                    PowerUp.Create(GetPosition(), transform);
+                    break;
+                case PowerUpType.BallEnlarge:
+                    Debug.LogError("Unknown power up ball enlarge");
+                    break;
+                default:
+                    Debug.LogError("Unknown power up type");
+                    break;
+            }
         }
     }
     Vector3 GetPosition()
@@ -35,6 +65,12 @@ public class PowerUpManagerScript : MonoBehaviour
         if (Random.Range(0, 2) == 0) randX *= -1;
 
         return new Vector3(randX, randY, 0);
+    }
+
+    PowerUpType GetPowerUpType()
+    {
+        int randomIndex = Random.Range(0, weightedTypeList.Count);
+        return weightedTypeList[randomIndex];
     }
 
     // Update is called once per frame

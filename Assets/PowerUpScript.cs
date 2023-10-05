@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PowerUp : MonoBehaviour
 {
+
+    public static GameObject Create(Vector3 pos, Transform parent)
+    {
+        return Instantiate(Resources.Load<GameObject>("PaddleEnlargePrefab"), pos, Quaternion.identity, parent);
+    }
     public virtual void Activate()
     {
         // Base activation code here
-        Debug.Log("Base Power-Up Activated");
+        Debug.Log("Paddle enlarge Power-Up Activated");
     }
 
     public void OnTriggerEnter2D(Collider2D collider)
