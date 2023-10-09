@@ -4,17 +4,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 
-public class GoalFieldScript : MonoBehaviour
+public class SlowMoFieldScript : MonoBehaviour
 {
-    public static event Action GoalFieldEnterEvent;
-    public static event Action GoalFieldExitEvent;
+    public static event Action SlowMoFieldEnterEvent;
+    public static event Action SlowMoFieldExitEvent;
 
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Ball")
         {
-            Debug.Log("GoalFieldEnter event triggered");
-            GoalFieldEnterEvent();
+            SlowMoFieldEnterEvent();
         }
     }
 
@@ -22,8 +21,7 @@ public class GoalFieldScript : MonoBehaviour
     {
         if (collider.gameObject.tag == "Ball")
         {
-            Debug.Log("GoalFieldExit event triggered");
-            GoalFieldExitEvent();
+            SlowMoFieldExitEvent();
         }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5988780893192530904}
   - component: {fileID: -1906622108379995044}
   m_Layer: 0
-  m_Name: GoalField
+  m_Name: SlowMoField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 10.65}
+  m_Size: {x: 1, y: 10}
   m_EdgeRadius: 0
 --- !u!114 &-1906622108379995044
 MonoBehaviour:

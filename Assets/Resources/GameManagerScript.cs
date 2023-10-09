@@ -21,21 +21,22 @@ public class GameManagerScript : MonoBehaviour
     bool isGameResetting = false;
     bool isGoalAllowed = true;
 
-    public float slowMotionTimeScale = 0.1f;
-    public float normalTimeDelay = 0.05f;
     private float startTimeScale;
-    private float startFixedDeltaTimeScale;
+    private float startFixedDeltaTime;
+
+    void Awake()
+    {
+        GoalScript.goalEvent += OnGoal;
+        MidlineScript.MidlineCrossed += EnableGoalAllowed;
+        SlowMoManagerScript.SetTimeScale += SetTimeScale;
+        startTimeScale = Time.timeScale;
+        startFixedDeltaTime = Time.fixedDeltaTime;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        GoalScript.goalEvent += OnGoal;
-        MidlineScript.MidlineCrossed += EnableGoalAllowed;
-        GoalFieldScript.GoalFieldEnterEvent += OnGoalFieldEnter;
-        GoalFieldScript.GoalFieldExitEvent += OnGoalFieldExit;
 
-        startTimeScale = Time.timeScale;
-        startFixedDeltaTimeScale = Time.fixedDeltaTime;
     }
 
     // Update is called once per frame
@@ -43,16 +44,16 @@ public class GameManagerScript : MonoBehaviour
     {
     }
 
-    private void EnableGoalAllowed() { isGoalAllowed = true; }
-
     private void OnDestroy()
     {
         GoalScript.goalEvent -= OnGoal;
         MidlineScript.MidlineCrossed -= EnableGoalAllowed;
-        GoalFieldScript.GoalFieldEnterEvent -= OnGoalFieldEnter;
-        GoalFieldScript.GoalFieldExitEvent -= OnGoalFieldExit;
+        SlowMoManagerScript.SetTimeScale -= SetTimeScale;
+    }
 
-        NormalTime();
+    private void EnableGoalAllowed()
+    {
+        isGoalAllowed = true;
     }
 
     void OnGoal(int playerId)
@@ -73,8 +74,6 @@ public class GameManagerScript : MonoBehaviour
         }
 
         UpdateScoreBoard();
-        // Wait a short moment to trigger normal time
-        StartCoroutine(Utilities.WaitAndTriggerFunction(normalTimeDelay, NormalTime));
     }
 
     void OnNewGameEvent()
@@ -82,28 +81,11 @@ public class GameManagerScript : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void OnGoalFieldEnter()
+    private void SetTimeScale(float timeScale)
     {
-        SlowTime();
-    }
-
-    void OnGoalFieldExit()
-    {
-        NormalTime();
-    }
-
-    private void SlowTime()
-    {
-        GetComponent<AudioSource>().Play();
-        Time.timeScale = slowMotionTimeScale;
-        Time.fixedDeltaTime = startFixedDeltaTimeScale * slowMotionTimeScale;
-    }
-
-    private void NormalTime()
-    {
-        GetComponent<AudioSource>().Stop();
-        Time.timeScale = startTimeScale;
-        Time.fixedDeltaTime = startFixedDeltaTimeScale;
+        Debug.Assert(0 < timeScale && timeScale <= 1);
+        Time.timeScale = startTimeScale * timeScale;
+        Time.fixedDeltaTime = startFixedDeltaTime * timeScale;
     }
 
     void UpdateScoreBoard()
