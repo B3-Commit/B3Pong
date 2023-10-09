@@ -17,15 +17,12 @@ public class Ball : MonoBehaviour
     public const float TIME_SIZE_DECR = 2e-3f;
     public const float DEFAULT_SIZE = 4.0f;
 
-    private AudioSource audioSource;
     private int speedAsPercent = 100;
+
+    [SerializeField] private AudioClip bounceSound;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        // Hack to remove first silent part of the audio clip
-        audioSource.time = GetComponent<AudioSource>().clip.length * .15f;
-
         var rigidBody = GetComponent<Rigidbody2D>();
 
         currentMinimumSpeed = DEFAULT_MINIMUM_SPEED * speedAsPercent / 100;
@@ -66,7 +63,7 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        audioSource.Play(0);
+        AudioManager.Instance.PlayEffect(bounceSound);
         var particleSystem = GetComponent<ParticleSystem>();
         particleSystem.Play();
 

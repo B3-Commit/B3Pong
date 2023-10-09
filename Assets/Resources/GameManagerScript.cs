@@ -24,6 +24,9 @@ public class GameManagerScript : MonoBehaviour
     private float startTimeScale;
     private float startFixedDeltaTime;
 
+    [SerializeField] private AudioClip slowTimeSound;    
+    private AudioSource slowTimeAudioSource;
+
     void Awake()
     {
         GoalScript.goalEvent += OnGoal;
@@ -31,6 +34,8 @@ public class GameManagerScript : MonoBehaviour
         SlowMoManagerScript.SetTimeScale += SetTimeScale;
         startTimeScale = Time.timeScale;
         startFixedDeltaTime = Time.fixedDeltaTime;
+
+        slowTimeAudioSource = AudioManager.Instance.CreateAudioSource(slowTimeSound, true);
     }
 
     // Start is called before the first frame update
@@ -83,6 +88,17 @@ public class GameManagerScript : MonoBehaviour
 
     private void SetTimeScale(float timeScale)
     {
+        if (Time.timeScale == startTimeScale && timeScale != startTimeScale)
+        {
+            AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume()/8);
+            slowTimeAudioSource.Play();
+        }
+        else if (Time.timeScale != startTimeScale && timeScale == startTimeScale)
+        {
+            AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume()*8);
+            slowTimeAudioSource.Stop();
+        }
+
         Debug.Assert(0 < timeScale && timeScale <= 1);
         Time.timeScale = startTimeScale * timeScale;
         Time.fixedDeltaTime = startFixedDeltaTime * timeScale;

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -6043294204285574223}
   - component: {fileID: 7898908991499929706}
   - component: {fileID: 2507191953428414360}
+  - component: {fileID: 3087012509576136999}
   m_Layer: 6
   m_Name: PaddleEnlargePrefab
   m_TagString: Untagged
@@ -144,3 +145,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpType: 0
+--- !u!114 &3087012509576136999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8710187806601812808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c867fca99e1503040ad76509773d4b52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 91992aeeb82afc043829c9fa9fe011e9, type: 3}

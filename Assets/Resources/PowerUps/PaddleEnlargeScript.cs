@@ -6,7 +6,7 @@ public class PaddleEnlargePowerUp : PowerUp
     public static GameObject Create(Vector3 pos, Transform parent)
     {
         GameObject newPowerUpObject = Instantiate(Resources.Load<GameObject>(
-            "PaddleEnlargePrefab"), pos, Quaternion.identity, parent);
+            "PowerUps/PaddleEnlargePrefab"), pos, Quaternion.identity, parent);
         newPowerUpObject.GetComponent<PowerUp>().Activate();
         return newPowerUpObject;
     }
