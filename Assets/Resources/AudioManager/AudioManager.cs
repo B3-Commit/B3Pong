@@ -55,6 +55,16 @@ public class AudioManager : MonoBehaviour
         musicSource.volume = volume;
     }
 
+    public float GetMusicPitch()
+    {
+        return musicSource.pitch;
+    }
+
+    public void SetMusicPitch(float pitch)
+    {
+        musicSource.pitch = pitch;
+    }
+
     public float GetEffectsVolume()
     {
         return effectsSource.volume;

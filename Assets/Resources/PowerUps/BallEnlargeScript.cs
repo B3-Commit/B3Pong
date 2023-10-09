@@ -6,7 +6,7 @@ public class BallEnlargePowerUp : PowerUp
     public static GameObject Create(Vector3 pos, Transform parent)
     {
         GameObject newPowerUpObject = Instantiate(Resources.Load<GameObject>(
-            "BallEnlargePrefab"), pos, Quaternion.identity, parent);
+            "PowerUps/BallEnlargePrefab"), pos, Quaternion.identity, parent);
         newPowerUpObject.GetComponent<PowerUp>().Activate();
         return newPowerUpObject;
     }

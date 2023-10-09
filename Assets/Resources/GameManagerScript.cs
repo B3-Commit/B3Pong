@@ -91,11 +91,13 @@ public class GameManagerScript : MonoBehaviour
         if (Time.timeScale == startTimeScale && timeScale != startTimeScale)
         {
             AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume()/8);
+            // AudioManager.Instance.SetMusicPitch(AudioManager.Instance.GetMusicPitch()/2);
             slowTimeAudioSource.Play();
         }
         else if (Time.timeScale != startTimeScale && timeScale == startTimeScale)
         {
             AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume()*8);
+            // AudioManager.Instance.SetMusicPitch(AudioManager.Instance.GetMusicPitch()/2);
             slowTimeAudioSource.Stop();
         }
 
