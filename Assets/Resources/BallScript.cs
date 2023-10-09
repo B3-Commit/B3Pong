@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
     public string lastTouch;
     public float currentMinimumSpeed;
     public float currentMaximumSpeed;
+    public GameObject ballSpeedText;
 
     public const float DEFAULT_MINIMUM_SPEED = 4.5f;
     public const float DEFAULT_MAXIMUM_SPEED = 20.0f;
@@ -91,13 +92,13 @@ public class Ball : MonoBehaviour
 
     private void InternalChangeBallSpeed(int newSpeedAsPercent)
     {
-        int previousSpeed = speedAsPercent;
+        float speedChange = 1.0f * newSpeedAsPercent / speedAsPercent;
         speedAsPercent = newSpeedAsPercent;
 
         // Adjust current speed
         var rigidBody = GetComponent<Rigidbody2D>();
-        float speedChange = 1.0f * speedAsPercent / previousSpeed;
         rigidBody.velocity *= speedChange;
+        ballSpeedText.GetComponent< BallSpeedTextScript>().UpdateText(speedAsPercent);
 
         // Adjust min and max
         currentMinimumSpeed = DEFAULT_MINIMUM_SPEED * speedAsPercent / 100;

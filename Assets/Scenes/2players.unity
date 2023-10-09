@@ -1460,11 +1460,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -2}
   m_SizeDelta: {x: 8, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1393826076 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 915301240017294634, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
-  m_PrefabInstance: {fileID: 1705179674}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1425617519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1779,8 +1774,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEndTextGameObj: {fileID: 1223206964}
-  ballGameObj: {fileID: 1393826076}
-  ballSpeedTextGameObj: {fileID: 2026503849}
   maxScore: 5
   playerScores:
   - scoreText: {fileID: 730999552}
@@ -2072,8 +2065,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844b08c3fb55ce64b88cf8ce7a25cce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballGameObj: {fileID: 1393826076}
-  ballSpeedTextGameObj: {fileID: 2026503849}
 --- !u!4 &1666124439
 Transform:
   m_ObjectHideFlags: 0
@@ -2109,6 +2100,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Ball
       objectReference: {fileID: 0}
+    - target: {fileID: 2944712575848086846, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
+      propertyPath: ballSpeedText
+      value: 
+      objectReference: {fileID: 2026503849}
     - target: {fileID: 2963328980265422580, guid: 23d9745f95b60934bbea5fe30886b727, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2252,6 +2247,7 @@ GameObject:
   - component: {fileID: 2026503850}
   - component: {fileID: 2026503852}
   - component: {fileID: 2026503851}
+  - component: {fileID: 2026503853}
   m_Layer: 5
   m_Name: BallSpeedText
   m_TagString: Untagged
@@ -2375,6 +2371,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2026503849}
   m_CullTransparentMesh: 1
+--- !u!114 &2026503853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026503849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b397b300d6b32c94cb6010968e4c5bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMesh: {fileID: 0}
 --- !u!1001 &9003367465914937063
 PrefabInstance:
   m_ObjectHideFlags: 0

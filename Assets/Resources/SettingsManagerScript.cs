@@ -53,8 +53,6 @@ public class SettingsManagerScript : MonoBehaviour
         {
             ballSpeedAsPercent = ballGameObj.GetComponent<Ball>().ChangeBallSpeed(false);
         }
-        ballSpeedTextGameObj.GetComponent<TextMeshProUGUI>().text =
-            String.Format("Ball speed: {0} %", ballSpeedAsPercent);
 
 
     }
