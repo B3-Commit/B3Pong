@@ -617,8 +617,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2181929593888319727, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+      propertyPath: gamepadId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2181929593888319727, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
       propertyPath: playerIndex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2181929593888319727, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+      propertyPath: angularAcceleration
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 4878597424553864963, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
       propertyPath: m_Name
@@ -1543,6 +1551,10 @@ PrefabInstance:
     - target: {fileID: 2181929593888319727, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
       propertyPath: playerIndex
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2181929593888319727, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+      propertyPath: angularAcceleration
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 4878597424553864963, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
       propertyPath: m_Name

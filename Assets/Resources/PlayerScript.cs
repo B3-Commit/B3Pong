@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -8,8 +10,10 @@ public class PlayerScript : MonoBehaviour
     public KeyCode down = KeyCode.DownArrow;
     public KeyCode left = KeyCode.LeftArrow;
     public KeyCode right = KeyCode.RightArrow;
-    
-    public float angularAcceleration = 1.5f;
+
+    public int gamepadId = 0;
+
+    public float angularAcceleration = 360.0f;
     public float paddle_speed = 10.0f;
     public const float Y_POSITION_LIMIT = 4.8f;
     public const float ANGULAR_VELOCITY_LIMIT = 1e3f;
@@ -31,28 +35,50 @@ public class PlayerScript : MonoBehaviour
             // Shrink back towards normal size
             transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y - TIME_SIZE_DECR);
         }
+
         var rigidBody = GetComponent<Rigidbody2D>();
-        if (Input.GetKey(up))
+
+        var gamepad = Gamepad.all.ElementAtOrDefault(gamepadId);
+        if (gamepad != null)
         {
-            rigidBody.velocity = Vector2.zero;
-            transform.position += Vector3.up * paddle_speed * Time.deltaTime;            
+            var move = gamepad.rightStick.ReadValue();
+            if (System.Math.Abs(move.y) > 0.2f)
+            {
+                rigidBody.velocity = Vector2.zero;
+                transform.position += new Vector3(
+                    0.0f,
+                    paddle_speed * Time.deltaTime * move.y,
+                    0.0f);
+            }
+            if (System.Math.Abs(move.x) > 0.2f)
+            {
+                rigidBody.angularVelocity += Time.deltaTime * angularAcceleration * move.x;
+            }
         }
-        if (Input.GetKey(down))
+        else
         {
-            rigidBody.velocity = Vector2.zero;
-            transform.position += Vector3.down * paddle_speed * Time.deltaTime;
-        }
-        if (Input.GetKey(left))
-        {
-            rigidBody.angularVelocity += angularAcceleration;
-        }
-        if (Input.GetKey(right))
-        {
-            rigidBody.angularVelocity -= angularAcceleration;
+            if (Input.GetKey(up))
+            {
+                rigidBody.velocity = Vector2.zero;
+                transform.position += Vector3.up * paddle_speed * Time.deltaTime;
+            }
+            if (Input.GetKey(down))
+            {
+                rigidBody.velocity = Vector2.zero;
+                transform.position += Vector3.down * paddle_speed * Time.deltaTime;
+            }
+            if (Input.GetKey(left))
+            {
+                rigidBody.angularVelocity += angularAcceleration * Time.deltaTime;
+            }
+            if (Input.GetKey(right))
+            {
+                rigidBody.angularVelocity -= angularAcceleration * Time.deltaTime;
+            }
         }
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
         rigidBody.angularVelocity = Mathf.Clamp(rigidBody.angularVelocity, -ANGULAR_VELOCITY_LIMIT, ANGULAR_VELOCITY_LIMIT);
-        
+
     }
 
     public void GetPowerUp(PowerUp powerUp)
@@ -60,7 +86,7 @@ public class PlayerScript : MonoBehaviour
         if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.PaddleEnlarge)
         {
             transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y + POWER_UP_SIZE_INCR);
-        } 
+        }
         else
         {
             Debug.Assert(false, "Unknown power up hit player");
