@@ -7,13 +7,17 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public string lastTouch;
-    public const float MINIMUM_SPEED = 4.5f;
-    public const float MAXIMUM_SPEED = 20.0f;
+    public float currentMinimumSpeed;
+    public float currentMaximumSpeed;
+
+    public const float DEFAULT_MINIMUM_SPEED = 4.5f;
+    public const float DEFAULT_MAXIMUM_SPEED = 20.0f;
     public const float POWER_UP_SIZE_INCR = 2f;
     public const float TIME_SIZE_DECR = 2e-3f;
     public const float DEFAULT_SIZE = 4.0f;
 
     private AudioSource audioSource;
+    private int speedAsPercent = 100;
 
     void Start()
     {
@@ -23,8 +27,11 @@ public class Ball : MonoBehaviour
 
         var rigidBody = GetComponent<Rigidbody2D>();
 
-        float x = Random.Range(0, 2) == 0 ? -5.0f : 5.0f;
-        float y = 0.01f * (float)Random.Range(0, 500);
+        currentMinimumSpeed = DEFAULT_MINIMUM_SPEED * speedAsPercent / 100;
+        currentMaximumSpeed = DEFAULT_MAXIMUM_SPEED * speedAsPercent / 100;
+
+        float x = Random.Range(0, 2) == 0 ? -currentMinimumSpeed : currentMinimumSpeed;
+        float y = 0.01f * (float)Random.Range(0, 100 * currentMinimumSpeed);
 
         rigidBody.velocity = new Vector2(x, y);
     }
@@ -40,19 +47,19 @@ public class Ball : MonoBehaviour
 
 
         // To keep the flow going, there needs to be a minimum x velocity
-        if (System.Math.Abs(rigidBody.velocity.x) < MINIMUM_SPEED)
+        if (System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed)
         {
-            float newX =  rigidBody.velocity.x < 0 ? -MINIMUM_SPEED : MINIMUM_SPEED;
+            float newX =  rigidBody.velocity.x < 0 ? -currentMinimumSpeed : currentMinimumSpeed;
             rigidBody.velocity = new Vector2(newX, rigidBody.velocity.y);
         }
 
         var speed = rigidBody.velocity.magnitude;
-        if (speed < MINIMUM_SPEED)
+        if (speed < currentMinimumSpeed)
         {
-            rigidBody.velocity = rigidBody.velocity / speed * MINIMUM_SPEED;
-        } else if (speed > MAXIMUM_SPEED)
+            rigidBody.velocity = rigidBody.velocity / speed * currentMinimumSpeed;
+        } else if (speed > currentMaximumSpeed)
         {
-            rigidBody.velocity = rigidBody.velocity / speed * MAXIMUM_SPEED;
+            rigidBody.velocity = rigidBody.velocity / speed * currentMaximumSpeed;
         }
     }
 
@@ -68,6 +75,35 @@ public class Ball : MonoBehaviour
             lastTouch = collision.gameObject.name;
         }
     }
+
+    // If argument increase is false, it is a decrease
+    public int ChangeBallSpeed(bool increase)
+    {
+        return ChangeBallSpeed(speedAsPercent + (increase ? 10 : -10));
+    }
+
+    public int ChangeBallSpeed(int newSpeedAsPercent)
+    {
+        newSpeedAsPercent = Mathf.Clamp(newSpeedAsPercent, 10, 500);
+        InternalChangeBallSpeed(newSpeedAsPercent);
+        return speedAsPercent;
+    }
+
+    private void InternalChangeBallSpeed(int newSpeedAsPercent)
+    {
+        int previousSpeed = speedAsPercent;
+        speedAsPercent = newSpeedAsPercent;
+
+        // Adjust current speed
+        var rigidBody = GetComponent<Rigidbody2D>();
+        float speedChange = 1.0f * speedAsPercent / previousSpeed;
+        rigidBody.velocity *= speedChange;
+
+        // Adjust min and max
+        currentMinimumSpeed = DEFAULT_MINIMUM_SPEED * speedAsPercent / 100;
+        currentMaximumSpeed = DEFAULT_MAXIMUM_SPEED * speedAsPercent / 100;
+    }
+
     public void GetPowerUp(PowerUp powerUp)
     {
         if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.BallEnlarge)

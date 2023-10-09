@@ -38,6 +38,11 @@ public class GameManagerScript : MonoBehaviour
         startFixedDeltaTimeScale = Time.fixedDeltaTime;
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+    }
+
     private void EnableGoalAllowed() { isGoalAllowed = true; }
 
     private void OnDestroy()
@@ -107,10 +112,5 @@ public class GameManagerScript : MonoBehaviour
         {
             player.scoreText.GetComponent<TextMeshProUGUI>().text = player.score.ToString();
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }
