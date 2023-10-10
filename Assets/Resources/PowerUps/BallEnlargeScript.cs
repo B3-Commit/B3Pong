@@ -20,6 +20,5 @@ public class BallEnlargePowerUp : PowerUp
         // Check if the collider object is a ball
         var ball = collider.gameObject.GetComponent<Ball>();
         ball.GetPowerUp(this);
-        Debug.Log("Bigger ball");
     }
 }
