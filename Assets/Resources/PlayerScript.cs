@@ -10,10 +10,10 @@ public class PlayerScript : MonoBehaviour
     public int playerId = -1;
     public int gamepadId = 0;
 
-    public KeyCode up = KeyCode.UpArrow;
-    public KeyCode down = KeyCode.DownArrow;
-    public KeyCode left = KeyCode.LeftArrow;
-    public KeyCode right = KeyCode.RightArrow;
+    public Key up = Key.UpArrow;
+    public Key down = Key.DownArrow;
+    public Key left = Key.LeftArrow;
+    public Key right = Key.RightArrow;
 
     public const float angularAcceleration = 360.0f;
     public const float paddle_speed = 10.0f;
@@ -42,6 +42,8 @@ public class PlayerScript : MonoBehaviour
         var rigidBody = GetComponent<Rigidbody2D>();
 
         var gamepad = Gamepad.all.ElementAtOrDefault(gamepadId);
+        var keyboard = Keyboard.current;
+
         if (gamepad != null)
         {
             var move = gamepad.rightStick.ReadValue();
@@ -58,23 +60,23 @@ public class PlayerScript : MonoBehaviour
                 rigidBody.angularVelocity += Time.deltaTime * angularAcceleration * move.x;
             }
         }
-        else
+        else if (keyboard != null)
         {
-            if (Input.GetKey(up))
+            if (keyboard[up].isPressed)
             {
                 rigidBody.velocity = Vector2.zero;
                 transform.position += Vector3.up * paddle_speed * Time.deltaTime;
             }
-            if (Input.GetKey(down))
+            if (keyboard[down].isPressed)
             {
                 rigidBody.velocity = Vector2.zero;
                 transform.position += Vector3.down * paddle_speed * Time.deltaTime;
             }
-            if (Input.GetKey(left))
+            if (keyboard[left].isPressed)
             {
                 rigidBody.angularVelocity += angularAcceleration * Time.deltaTime;
             }
-            if (Input.GetKey(right))
+            if (keyboard[right].isPressed)
             {
                 rigidBody.angularVelocity -= angularAcceleration * Time.deltaTime;
             }

@@ -22,7 +22,6 @@ public class SettingsManagerScript : MonoBehaviour
             // This object should not be destroyed when reloading the scene
             instance = this;
             DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(gameObject);
         }
         else
         {

@@ -44,18 +44,21 @@ public class Ball : MonoBehaviour
         }
 
 
-        // To keep the flow going, there needs to be a minimum x velocity
-        if (System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed)
-        {
-            float newX =  rigidBody.velocity.x < 0 ? -currentMinimumSpeed : currentMinimumSpeed;
-            rigidBody.velocity = new Vector2(newX, rigidBody.velocity.y);
-        }
-
+        float timeScaler = 2f;
+        //// To keep the flow going, there needs to be a minimum x velocity
         var speed = rigidBody.velocity.magnitude;
         if (speed < currentMinimumSpeed)
         {
-            rigidBody.velocity = rigidBody.velocity / speed * currentMinimumSpeed;
-        } else if (speed > currentMaximumSpeed)
+            rigidBody.velocity += rigidBody.velocity * Time.deltaTime * timeScaler;
+        }
+        else if (System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed / 2.0f)
+        {
+            var speedDelta = Mathf.Sign(rigidBody.velocity.x) * Time.deltaTime * timeScaler;
+            rigidBody.velocity = new Vector2(
+                rigidBody.velocity.x + speedDelta,
+                rigidBody.velocity.y);
+        }
+        else if(speed > currentMaximumSpeed)
         {
             rigidBody.velocity = rigidBody.velocity / speed * currentMaximumSpeed;
         }

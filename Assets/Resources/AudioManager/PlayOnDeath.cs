@@ -8,6 +8,10 @@ public class PlayOnDeath : MonoBehaviour
 
     void OnDestroy()
     {
-        AudioManager.Instance.PlayEffect(clip);
+        if (gameObject.scene.isLoaded) 
+        {
+            // Was Deleted
+            AudioManager.Instance.PlayEffect(clip);
+        }
     }
 }

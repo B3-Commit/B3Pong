@@ -24,7 +24,7 @@ public class GameManagerScript : MonoBehaviour
     public const float NORMAL_TIME = 1f;
     private float startFixedDeltaTime;
 
-    [SerializeField] private AudioClip slowTimeSound;    
+    [SerializeField] private AudioClip slowTimeSound;
     private AudioSource slowTimeAudioSource;
 
     void Awake()
@@ -32,15 +32,14 @@ public class GameManagerScript : MonoBehaviour
         GoalScript.goalEvent += OnGoal;
         MidlineScript.MidlineCrossed += EnableGoalAllowed;
         SlowMoManagerScript.SetTimeScale += SetTimeScale;
-        startFixedDeltaTime = Time.fixedDeltaTime;
 
+        startFixedDeltaTime = Time.fixedDeltaTime;
     }
 
     // Start is called before the first frame update
     void Start()
     {
         slowTimeAudioSource = AudioManager.Instance.CreateAudioSource(slowTimeSound, true);
-
     }
 
     // Update is called once per frame
