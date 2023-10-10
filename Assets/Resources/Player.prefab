@@ -47,12 +47,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6169357b909518e469b0685fc6b984dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName: 
+  playerId: -1
+  gamepadId: 0
   up: 273
   down: 274
   left: 276
   right: 275
-  angularAcceleration: 1
-  paddle_speed: 10
 --- !u!212 &-608073265036686827
 SpriteRenderer:
   m_ObjectHideFlags: 0

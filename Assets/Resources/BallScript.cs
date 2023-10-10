@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public string lastTouch;
+    public PlayerScript lastTouch;
     public float currentMinimumSpeed;
     public float currentMaximumSpeed;
     public GameObject ballSpeedText;
@@ -68,9 +68,9 @@ public class Ball : MonoBehaviour
         particleSystem.Play();
 
         // Save last touch
-        if (collision.gameObject.name is "Player Right" or "Player Left")
+        if (collision.gameObject.TryGetComponent<PlayerScript>(out PlayerScript player))
         {
-            lastTouch = collision.gameObject.name;
+            lastTouch = player;
         }
     }
 

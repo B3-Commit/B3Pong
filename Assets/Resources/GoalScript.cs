@@ -8,14 +8,14 @@ using UnityEngine.SceneManagement;
 
 public class GoalScript : MonoBehaviour
 {
-    public int playerId;
-    public static event Action<int> goalEvent;
+    public PlayerScript player;
+    public static event Action<PlayerScript> goalEvent;
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent<Ball>(out var ball))
         {
-            goalEvent(playerId);
+            goalEvent(player);
         }
     }
 }

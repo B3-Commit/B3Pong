@@ -6,15 +6,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
+    public string playerName;
+    public int playerId = -1;
+    public int gamepadId = 0;
+
     public KeyCode up = KeyCode.UpArrow;
     public KeyCode down = KeyCode.DownArrow;
     public KeyCode left = KeyCode.LeftArrow;
     public KeyCode right = KeyCode.RightArrow;
 
-    public int gamepadId = 0;
-
-    public float angularAcceleration = 360.0f;
-    public float paddle_speed = 10.0f;
+    public const float angularAcceleration = 360.0f;
+    public const float paddle_speed = 10.0f;
     public const float Y_POSITION_LIMIT = 4.8f;
     public const float ANGULAR_VELOCITY_LIMIT = 1e3f;
     public const float POWER_UP_SIZE_INCR = 0.3f;
@@ -24,7 +26,8 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        Debug.Assert(playerName != null);
+        Debug.Assert(playerId != -1);
     }
 
     // Update is called once per frame

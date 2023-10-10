@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManagerScript : MonoBehaviour
 {
     [System.Serializable]
-    public class Player
+    public class PlayerScore
     {
         public GameObject scoreText;
         [HideInInspector]
@@ -17,7 +17,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject gameEndTextGameObj;
 
     public int maxScore = 5;
-    public List<Player> playerScores;
+    public List<PlayerScore> playerScores;
     bool isGameResetting = false;
     bool isGoalAllowed = true;
 
@@ -35,12 +35,12 @@ public class GameManagerScript : MonoBehaviour
         startTimeScale = Time.timeScale;
         startFixedDeltaTime = Time.fixedDeltaTime;
 
-        slowTimeAudioSource = AudioManager.Instance.CreateAudioSource(slowTimeSound, true);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        slowTimeAudioSource = AudioManager.Instance.CreateAudioSource(slowTimeSound, true);
 
     }
 
@@ -61,18 +61,18 @@ public class GameManagerScript : MonoBehaviour
         isGoalAllowed = true;
     }
 
-    void OnGoal(int playerId)
+    void OnGoal(PlayerScript player)
     {
         // Do not allow goals during reset or from the same interaction
         if (isGameResetting) return;
         if (!isGoalAllowed) return;
 
-        playerScores[playerId].score++;
+        playerScores[player.playerId].score++;
         isGoalAllowed = false;
 
-        if (playerScores[playerId].score >= maxScore)
+        if (playerScores[player.playerId].score >= maxScore)
         {
-            gameEndTextGameObj.GetComponent<TextMeshProUGUI>().text = String.Format("Player {0} Won", playerId + 1);
+            gameEndTextGameObj.GetComponent<TextMeshProUGUI>().text = String.Format("{0} won", player.playerName);
 
             this.Invoke(() => OnNewGameEvent(), 3f);
             isGameResetting = true;

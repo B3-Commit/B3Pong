@@ -20,11 +20,10 @@ public class PaddleEnlargePowerUp : PowerUp
         // Check if the collider object is a ball
         var ball = collider.gameObject.GetComponent<Ball>();
 
-        GameObject player = GameObject.Find(ball.lastTouch);
+        PlayerScript player = ball.lastTouch;
         if (player != null)
         {
-            player.GetComponent<PlayerScript>().GetPowerUp(this);
-            Debug.Log(ball.lastTouch + " got larger paddle!");
+            player.GetPowerUp(this);
         }
     }
 }
