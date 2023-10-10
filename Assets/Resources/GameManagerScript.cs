@@ -21,7 +21,7 @@ public class GameManagerScript : MonoBehaviour
     bool isGameResetting = false;
     bool isGoalAllowed = true;
 
-    private float startTimeScale;
+    public const float NORMAL_TIME = 1f;
     private float startFixedDeltaTime;
 
     [SerializeField] private AudioClip slowTimeSound;    
@@ -32,7 +32,6 @@ public class GameManagerScript : MonoBehaviour
         GoalScript.goalEvent += OnGoal;
         MidlineScript.MidlineCrossed += EnableGoalAllowed;
         SlowMoManagerScript.SetTimeScale += SetTimeScale;
-        startTimeScale = Time.timeScale;
         startFixedDeltaTime = Time.fixedDeltaTime;
 
     }
@@ -88,13 +87,13 @@ public class GameManagerScript : MonoBehaviour
 
     private void SetTimeScale(float timeScale)
     {
-        if (Time.timeScale == startTimeScale && timeScale != startTimeScale)
+        if (Time.timeScale == NORMAL_TIME && timeScale != NORMAL_TIME)
         {
             AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume()/8);
             // AudioManager.Instance.SetMusicPitch(AudioManager.Instance.GetMusicPitch()/2);
             slowTimeAudioSource.Play();
         }
-        else if (Time.timeScale != startTimeScale && timeScale == startTimeScale)
+        else if (Time.timeScale != NORMAL_TIME && timeScale == NORMAL_TIME)
         {
             AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume()*8);
             // AudioManager.Instance.SetMusicPitch(AudioManager.Instance.GetMusicPitch()/2);
@@ -102,7 +101,7 @@ public class GameManagerScript : MonoBehaviour
         }
 
         Debug.Assert(0 < timeScale && timeScale <= 1);
-        Time.timeScale = startTimeScale * timeScale;
+        Time.timeScale = timeScale;
         Time.fixedDeltaTime = startFixedDeltaTime * timeScale;
     }
 
