@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
+    // Make this class static
+    public static GameManagerScript Instance;
+
     [System.Serializable]
     public class PlayerScore
     {
@@ -26,11 +29,22 @@ public class GameManagerScript : MonoBehaviour
 
     void Awake()
     {
-        GoalScript.goalEvent += OnGoal;
-        MidlineScript.MidlineCrossed += EnableGoalAllowed;
-        SlowMoManagerScript.SetTimeScale += SetTimeScale;
+        if (Instance == null)
+        {
+            // This class will be recreated on scene load, so no DontDestroyOnLoad should be used
+            Instance = this;
+            
+            GoalScript.goalEvent += OnGoal;
+            MidlineScript.MidlineCrossed += EnableGoalAllowed;
+            SlowMoManagerScript.SetTimeScale += SetTimeScale;
 
-        startFixedDeltaTime = Time.fixedDeltaTime;
+            startFixedDeltaTime = Time.fixedDeltaTime;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     // Start is called before the first frame update
@@ -45,9 +59,13 @@ public class GameManagerScript : MonoBehaviour
 
     private void OnDestroy()
     {
-        GoalScript.goalEvent -= OnGoal;
-        MidlineScript.MidlineCrossed -= EnableGoalAllowed;
-        SlowMoManagerScript.SetTimeScale -= SetTimeScale;
+        if (Instance == this)
+        {
+            Instance = null;
+            GoalScript.goalEvent -= OnGoal;
+            MidlineScript.MidlineCrossed -= EnableGoalAllowed;
+            SlowMoManagerScript.SetTimeScale -= SetTimeScale;
+        }
     }
 
     private void EnableGoalAllowed()
@@ -99,4 +117,6 @@ public class GameManagerScript : MonoBehaviour
             player.scoreText.GetComponent<TextMeshProUGUI>().text = player.score.ToString();
         }
     }
+
+    public bool IsGoalAllowed() { return isGoalAllowed; }
 }

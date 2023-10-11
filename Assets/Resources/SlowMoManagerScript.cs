@@ -11,6 +11,8 @@ public class SlowMoManagerScript : MonoBehaviour
     public List<float> slowMotionTimeScale = new() {0, 0, 0};
     public float normalTimeDelay = 0.02f;
 
+    public const float DEFAULT_SPEED = 1f;
+
     int numberOfActiveZones;
 
     void Awake()
@@ -45,23 +47,26 @@ public class SlowMoManagerScript : MonoBehaviour
 
     void OnSlowMoFieldExit()
     {
-        if (numberOfActiveZones == 0) return;
-        if (numberOfActiveZones == 3)
-        {
-            // Assume a goal has been scored
-            numberOfActiveZones = 0;
-        }
-        else
-        {
-            numberOfActiveZones--;
-        }
+        // This counter will be accurate at all times regardless of if goals have been scored
+        numberOfActiveZones--;
+        Debug.Assert(numberOfActiveZones >= 0);
 
         SendUpdate();
     }
 
     void SendUpdate()
     {
-        float newSpeed = slowMotionTimeScale[numberOfActiveZones];
-        SetTimeScale(newSpeed);
+        if (GameManagerScript.Instance.IsGoalAllowed())
+        {
+            // If no goal has just recently been scored, send update based on number of active zones.
+            float newSpeed = slowMotionTimeScale[numberOfActiveZones];
+            SetTimeScale(newSpeed);
+        }
+        else
+        {
+            // We should not send any normal update if a goal has recently been scored,
+            // as indicated by IsGoalAllowed(). Instead, the speed should always be restored.
+            SetTimeScale(DEFAULT_SPEED);
+        }
     }
 }

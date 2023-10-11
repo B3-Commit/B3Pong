@@ -52,15 +52,11 @@ public class AudioManager : MonoBehaviour
     {
         if (!heartBeatAudioSource.isPlaying && speed < NORMAL_TIME)
         {
-            Debug.Log("start heartbeat");
-
-
             StartCoroutine("SlowDownMusic");
             heartBeatAudioSource.Play();
         }
         else if (heartBeatAudioSource.isPlaying && speed == NORMAL_TIME)
         {
-            Debug.Log("stop heartbeat");
             StopCoroutine("SlowDownMusic");
             AudioManager.Instance.SetMusicVolume(defaultMusicVolume);
             musicSource.pitch = 1f;
