@@ -9,4 +9,15 @@ public static class Utilities
 		yield return new WaitForSeconds(waitTime);
 		functionToCall.Invoke();
     }
+
+    public static void Invoke(this MonoBehaviour mb, Action f, float delay)
+    {
+        mb.StartCoroutine(InvokeRoutine(f, delay));
+    }
+
+    private static IEnumerator InvokeRoutine(System.Action f, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        f();
+    }
 }
