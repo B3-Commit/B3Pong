@@ -11,8 +11,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource effectsSource;
     [SerializeField] private AudioSource heartBeatAudioSource;
-    public float volumeReduction = 8;
+    public float reducedVolume = 0.1f;
     public float maximumSpeedReduction = 0.2f;
+
+    float defaultMusicVolume;
 
     void Awake()
     {
@@ -26,6 +28,11 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        defaultMusicVolume = AudioManager.Instance.GetMusicVolume();
     }
 
     public void PlayEffect(AudioClip audioClip)
@@ -47,7 +54,6 @@ public class AudioManager : MonoBehaviour
         {
             Debug.Log("start heartbeat");
 
-            AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume() / volumeReduction);
 
             StartCoroutine("SlowDownMusic");
             heartBeatAudioSource.Play();
@@ -55,8 +61,8 @@ public class AudioManager : MonoBehaviour
         else if (heartBeatAudioSource.isPlaying && speed == NORMAL_TIME)
         {
             Debug.Log("stop heartbeat");
-            AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume() * volumeReduction);
             StopCoroutine("SlowDownMusic");
+            AudioManager.Instance.SetMusicVolume(defaultMusicVolume);
             musicSource.pitch = 1f;
             heartBeatAudioSource.Stop();
         }
@@ -72,6 +78,7 @@ public class AudioManager : MonoBehaviour
         {
             float lerpFactor = t / duration;
             musicSource.pitch = Mathf.Lerp(startPitch, targetPitch, lerpFactor);
+            AudioManager.Instance.SetMusicVolume(Mathf.Lerp(defaultMusicVolume, defaultMusicVolume * reducedVolume, lerpFactor));
             yield return null;
         }
 
