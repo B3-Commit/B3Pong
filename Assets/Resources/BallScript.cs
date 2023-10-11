@@ -45,7 +45,7 @@ public class Ball : MonoBehaviour
 
 
         float timeScaler = 2f;
-        //// To keep the flow going, there needs to be a minimum x velocity
+        // To keep the flow going, there needs to be a minimum x velocity
         var speed = rigidBody.velocity.magnitude;
         if (speed < currentMinimumSpeed)
         {

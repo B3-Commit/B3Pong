@@ -6,8 +6,13 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
+    public const float NORMAL_TIME = 1f;
+
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource effectsSource;
+    [SerializeField] private AudioSource heartBeatAudioSource;
+    public float volumeReduction = 8;
+    public float maximumSpeedReduction = 0.2f;
 
     void Awake()
     {
@@ -15,6 +20,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SlowMoManagerScript.SetTimeScale += SetMusicSpeed;
         }
         else
         {
@@ -33,6 +39,43 @@ public class AudioManager : MonoBehaviour
         source.clip = clip;
         source.loop = loop;
         return source;
+    }
+
+    public void SetMusicSpeed(float speed)
+    {
+        if (!heartBeatAudioSource.isPlaying && speed < NORMAL_TIME)
+        {
+            Debug.Log("start heartbeat");
+
+            AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume() / volumeReduction);
+
+            StartCoroutine("SlowDownMusic");
+            heartBeatAudioSource.Play();
+        }
+        else if (heartBeatAudioSource.isPlaying && speed == NORMAL_TIME)
+        {
+            Debug.Log("stop heartbeat");
+            AudioManager.Instance.SetMusicVolume(AudioManager.Instance.GetMusicVolume() * volumeReduction);
+            StopCoroutine("SlowDownMusic");
+            musicSource.pitch = 1f;
+            heartBeatAudioSource.Stop();
+        }
+    }
+
+    IEnumerator SlowDownMusic()
+    {
+        float duration = 0.3f;
+        float targetPitch = 0.9f;
+        float startPitch = 1;
+
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            float lerpFactor = t / duration;
+            musicSource.pitch = Mathf.Lerp(startPitch, targetPitch, lerpFactor);
+            yield return null;
+        }
+
+        musicSource.pitch = targetPitch;
     }
 
     public float GetMasterVolume()
