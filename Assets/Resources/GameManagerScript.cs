@@ -64,6 +64,9 @@ public class GameManagerScript : MonoBehaviour
         playerScores[player.playerId].score++;
         isGoalAllowed = false;
 
+        // Shake camera
+        StartCoroutine(Camera.main.GetComponent<CameraShake>().Shake());
+
         if (playerScores[player.playerId].score >= maxScore)
         {
             gameEndTextGameObj.GetComponent<TextMeshProUGUI>().text = String.Format("{0} won", player.playerName);
