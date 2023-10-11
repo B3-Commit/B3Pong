@@ -16,6 +16,8 @@ public class BreathingAnimation : MonoBehaviour
     {
         startSize = transform.localScale;
         targetSize = startSize * expandAmount;
+        // Random animation start offset.
+        scrollAmount += Random.Range(0.0f, 1.0f) / expandSpeed;
     }
 
     void Update()
