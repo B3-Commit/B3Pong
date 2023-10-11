@@ -278,17 +278,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 3.5}
   m_SizeDelta: {x: 14.3132, y: 2.2683}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &129397558 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2181929593888319727, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
-  m_PrefabInstance: {fileID: 837000375}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6169357b909518e469b0685fc6b984dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &152744334
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,10 +1031,18 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7777212544448722063, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+      propertyPath: m_AngularDrag
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2181929593888319727, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4878597424553864963, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 1183767592}
   m_SourcePrefab: {fileID: 100100000, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
 --- !u!1 &889352997
 GameObject:
@@ -1776,6 +1773,30 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
+--- !u!1 &1183767587 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4878597424553864963, guid: 50ccf4d4047d3404ea154973e8cebe68, type: 3}
+  m_PrefabInstance: {fileID: 837000375}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1183767592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183767587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b41b38bfe6451874c9d230c12d059fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: Player Right
+  playerId: 1
+  gamepadId: 0
+  up: 63
+  down: 64
+  left: 61
+  right: 62
 --- !u!1 &1223206964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2970,7 +2991,7 @@ PrefabInstance:
     - target: {fileID: -3416591974164447761, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 129397558}
+      objectReference: {fileID: 1183767592}
     - target: {fileID: -3416591974164447761, guid: b86be4f9fc335ff4291e17591870cea9, type: 3}
       propertyPath: playerId
       value: 1
