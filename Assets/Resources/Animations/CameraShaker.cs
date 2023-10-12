@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
+    public AnimationCurve expandCurve;
     public Vector3 originalPosition;
     public float duration;
     public float magnitude;
@@ -14,8 +15,9 @@ public class CameraShake : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            float xOffset = Random.Range(-0.5f, 0.5f) * magnitude;
-            float yOffset = Random.Range(-0.5f, 0.5f) * magnitude;
+            float curveValue = expandCurve.Evaluate(elapsedTime / duration);
+            float xOffset = Random.Range(-0.5f, 0.5f) * magnitude * curveValue;
+            float yOffset = Random.Range(-0.5f, 0.5f) * magnitude * curveValue;
             transform.localPosition = new Vector3(xOffset, yOffset, originalPosition.z);
             elapsedTime += Time.deltaTime;
 
