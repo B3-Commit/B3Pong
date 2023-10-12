@@ -4,6 +4,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// Explanation for paddle size decrease:
+// There are currently two players and two types of power up, meaning that every player
+// will get an increase every forth powerup, currently every 20 seconds. To make the
+// paddles increase with time over the game, the paddles should restore in
+// PADDLE_SIZE_RESTORE_TIME. That means that every update, we should reduce
+// the size with POWER_UP_SIZE_INCR * deltaTime / PADDLE_SIZE_RESTORE_TIME at each update;
+
+
 public class PlayerScript : MonoBehaviour
 {
     public string playerName;
@@ -20,7 +28,7 @@ public class PlayerScript : MonoBehaviour
     public const float Y_POSITION_LIMIT = 4.8f;
     public const float ANGULAR_VELOCITY_LIMIT = 1e3f;
     public const float POWER_UP_SIZE_INCR = 0.3f;
-    public const float TIME_SIZE_DECR = 3e-5f;
+    public const float PADDLE_SIZE_RESTORE_TIME = 40f; // seconds
     public const float DEFAULT_SIZE = 1.5f;
 
     // Start is called before the first frame update
@@ -36,7 +44,8 @@ public class PlayerScript : MonoBehaviour
         if (transform.localScale.y > DEFAULT_SIZE)
         {
             // Shrink back towards normal size
-            transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y - TIME_SIZE_DECR);
+            float newY = transform.localScale.y - POWER_UP_SIZE_INCR * Time.deltaTime / PADDLE_SIZE_RESTORE_TIME;
+            transform.localScale = new Vector2(transform.localScale.x, newY);
         }
 
         var rigidBody = GetComponent<Rigidbody2D>();

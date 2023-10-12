@@ -15,6 +15,7 @@ public class Ball : MonoBehaviour
     public const float DEFAULT_MAXIMUM_SPEED = 20.0f;
     public const float POWER_UP_SIZE_INCR = 2f;
     public const float TIME_SIZE_DECR = 2e-3f;
+    public const float BALL_SIZE_RESTORE_TIME = 4f; // seconds
     public const float DEFAULT_SIZE = 4.0f;
 
     private int speedAsPercent = 100;
@@ -40,9 +41,9 @@ public class Ball : MonoBehaviour
         if (transform.localScale.y > DEFAULT_SIZE)
         {
             // Shrink back towards normal size
-            transform.localScale -= new Vector3(TIME_SIZE_DECR, TIME_SIZE_DECR, 0);
+            float shrinkage = POWER_UP_SIZE_INCR * Time.deltaTime / BALL_SIZE_RESTORE_TIME;
+            transform.localScale -= new Vector3(shrinkage, shrinkage, 0);
         }
-
 
         float timeScaler = 2f;
         // To keep the flow going, there needs to be a minimum x velocity
