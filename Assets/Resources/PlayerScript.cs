@@ -23,29 +23,47 @@ public class PlayerScript : MonoBehaviour
     public Key left = Key.LeftArrow;
     public Key right = Key.RightArrow;
 
-    public const float angularAcceleration = 360.0f;
-    public const float paddle_speed = 10.0f;
+    public const float MAX_ANGLE_ACC = 360.0f;
+    public const float PADDLE_SPEED = 10.0f;
     public const float Y_POSITION_LIMIT = 4.8f;
     public const float ANGULAR_VELOCITY_LIMIT = 1e3f;
-    public const float POWER_UP_SIZE_INCR = 0.3f;
+    public const float POWER_UP_SIZE_INCR = 0.2f; // 20 %
     public const float PADDLE_SIZE_RESTORE_TIME = 40f; // seconds
-    public const float DEFAULT_SIZE = 1.5f;
+    public const float DEFAULT_SIZE_RECTANGLE = 1.5f;
+    public const float DEFAULT_SIZE_ELLIPS = 0.35f;
+
+    Sprite originalSprite;
+    Sprite ellipseSprite;
+    float paddleSizeRatioFromPowerUps = 1;
+    float currentDefaultSize = DEFAULT_SIZE_RECTANGLE;
+
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Assert(playerName != null);
         Debug.Assert(playerId != -1);
+
+        // Save the two sprites as variables
+        originalSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+        ellipseSprite = Resources.Load<Sprite>("Sprites/ellipsis");
+
+        // Create disabled ellipse collider
+        PolygonCollider2D polyCollider = gameObject.AddComponent<PolygonCollider2D>();
+        polyCollider.SetPath(0, Utilities.GetEllipseVectorPoints());
+        polyCollider.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.localScale.y > DEFAULT_SIZE)
+        if (paddleSizeRatioFromPowerUps > 1)
         {
             // Shrink back towards normal size
-            float newY = transform.localScale.y - POWER_UP_SIZE_INCR * Time.deltaTime / PADDLE_SIZE_RESTORE_TIME;
-            transform.localScale = new Vector2(transform.localScale.x, newY);
+            paddleSizeRatioFromPowerUps -= POWER_UP_SIZE_INCR * Time.deltaTime / PADDLE_SIZE_RESTORE_TIME;
+            float newY = currentDefaultSize * paddleSizeRatioFromPowerUps;
+            transform.localScale = new Vector3(transform.localScale.x, newY, 0);
+
         }
 
         var rigidBody = GetComponent<Rigidbody2D>();
@@ -61,12 +79,12 @@ public class PlayerScript : MonoBehaviour
                 rigidBody.velocity = Vector2.zero;
                 transform.position += new Vector3(
                     0.0f,
-                    paddle_speed * Time.deltaTime * move.y,
+                    PADDLE_SPEED * Time.deltaTime * move.y,
                     0.0f);
             }
             if (System.Math.Abs(move.x) > 0.2f)
             {
-                rigidBody.angularVelocity += Time.deltaTime * angularAcceleration * move.x;
+                rigidBody.angularVelocity += Time.deltaTime * MAX_ANGLE_ACC * move.x;
             }
         }
         else if (keyboard != null)
@@ -74,20 +92,20 @@ public class PlayerScript : MonoBehaviour
             if (keyboard[up].isPressed)
             {
                 rigidBody.velocity = Vector2.zero;
-                transform.position += Vector3.up * paddle_speed * Time.deltaTime;
+                transform.position += Vector3.up * PADDLE_SPEED * Time.deltaTime;
             }
             if (keyboard[down].isPressed)
             {
                 rigidBody.velocity = Vector2.zero;
-                transform.position += Vector3.down * paddle_speed * Time.deltaTime;
+                transform.position += Vector3.down * PADDLE_SPEED * Time.deltaTime;
             }
             if (keyboard[left].isPressed)
             {
-                rigidBody.angularVelocity += angularAcceleration * Time.deltaTime;
+                rigidBody.angularVelocity += MAX_ANGLE_ACC * Time.deltaTime;
             }
             if (keyboard[right].isPressed)
             {
-                rigidBody.angularVelocity -= angularAcceleration * Time.deltaTime;
+                rigidBody.angularVelocity -= MAX_ANGLE_ACC * Time.deltaTime;
             }
         }
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
@@ -99,11 +117,53 @@ public class PlayerScript : MonoBehaviour
     {
         if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.PaddleEnlarge)
         {
-            transform.localScale = new Vector2(transform.localScale.x, transform.localScale.y + POWER_UP_SIZE_INCR);
+            paddleSizeRatioFromPowerUps += POWER_UP_SIZE_INCR;
+            float newY = currentDefaultSize * paddleSizeRatioFromPowerUps;
+            transform.localScale = new Vector3(transform.localScale.x, newY, 0);
+        }
+        else if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.RoundedPaddle)
+        {
+            TurnIntoEllipse();
+            StopCoroutine("RestoreToRectangleAfterDelay");
+            StartCoroutine("RestoreToRectangleAfterDelay");
         }
         else
         {
             Debug.Assert(false, "Unknown power up hit player");
         }
     }
+
+    void TurnIntoEllipse()
+    {
+        // Switch collider
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        gameObject.GetComponent<PolygonCollider2D>().enabled = true;
+
+        // Change the sprite
+        gameObject.GetComponent<SpriteRenderer>().sprite = ellipseSprite;
+
+        transform.localScale = new Vector2(0.35f, 0.35f);
+        currentDefaultSize = DEFAULT_SIZE_ELLIPS;
+    }
+
+    private IEnumerator RestoreToRectangleAfterDelay()
+    {
+        yield return new WaitForSeconds(10);
+        RestoreRectangle();
+    }
+
+    private void RestoreRectangle()
+    {
+        // Switch collider
+        gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+
+        // Change the sprite
+        gameObject.GetComponent<SpriteRenderer>().sprite = originalSprite;
+
+        transform.localScale = new Vector2(0.2f, 1.5f);
+        currentDefaultSize = DEFAULT_SIZE_RECTANGLE;
+    }
+
+
 }
