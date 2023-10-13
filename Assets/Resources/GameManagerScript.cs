@@ -26,9 +26,6 @@ public class GameManagerScript : MonoBehaviour
     bool reloadSceneOnUnpause = false;
 
 
-    float startFixedDeltaTime;
-    float timeScale;
-
     void Awake()
     {
         if (Instance == null)
@@ -39,25 +36,12 @@ public class GameManagerScript : MonoBehaviour
             GoalScript.goalEvent += OnGoal;
             MidlineScript.MidlineCrossed += EnableGoalAllowed;
             SettingsManagerScript.PauseTriggered += OnPauseTriggered;
-            SlowMoManagerScript.SetTimeScale += SetTimeScale;
-
-            startFixedDeltaTime = Time.fixedDeltaTime;
         }
         else
         {
             Destroy(gameObject);
         }
 
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     private void OnDestroy()
@@ -68,7 +52,6 @@ public class GameManagerScript : MonoBehaviour
             GoalScript.goalEvent -= OnGoal;
             MidlineScript.MidlineCrossed -= EnableGoalAllowed;
             SettingsManagerScript.PauseTriggered -= OnPauseTriggered;
-            SlowMoManagerScript.SetTimeScale -= SetTimeScale;
         }
     }
 
@@ -87,7 +70,7 @@ public class GameManagerScript : MonoBehaviour
         isGoalAllowed = false;
 
         // Shake camera
-        StartCoroutine(Camera.main.GetComponent<CameraShake>().Shake());
+        StartCoroutine(Camera.main.GetComponent<ShakeAnimation>().Shake());
 
         if (playerScores[player.playerId].score >= maxScore)
         {
@@ -110,15 +93,6 @@ public class GameManagerScript : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-    }
-
-    private void SetTimeScale(float newTimeScale)
-    {
-
-        Debug.Assert(0 < newTimeScale && newTimeScale <= 1);
-        Time.timeScale = newTimeScale;
-        Time.fixedDeltaTime = startFixedDeltaTime * newTimeScale;
-        this.timeScale = newTimeScale;
     }
 
     void UpdateScoreBoard()

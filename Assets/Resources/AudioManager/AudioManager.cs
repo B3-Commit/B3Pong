@@ -23,19 +23,12 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            SlowMoManagerScript.SetTimeScale += SetMusicSpeed;
         }
         else
         {
             Destroy(gameObject);
         }
     }
-
-    void OnDestroy()
-    {
-        SlowMoManagerScript.SetTimeScale -= SetMusicSpeed;
-    }
-
 
     private void Start()
     {
@@ -71,7 +64,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    IEnumerator SlowDownMusic()
+    private IEnumerator SlowDownMusic()
     {
         float duration = 0.3f;
         float targetPitch = 0.9f;
@@ -94,7 +87,6 @@ public class AudioManager : MonoBehaviour
         {
             musicSource.Stop();
             musicSourceGravity.Play();
-
         }
         else if (!useGravityMusic && musicSourceGravity.isPlaying)
         {

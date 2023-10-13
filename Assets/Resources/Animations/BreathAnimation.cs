@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BreathingAnimation : MonoBehaviour
+public class BreathAnimation : MonoBehaviour
 {
     public AnimationCurve expandCurve;
     public float expandAmount;

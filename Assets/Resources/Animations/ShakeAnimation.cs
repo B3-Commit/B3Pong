@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraShake : MonoBehaviour
+public class ShakeAnimation : MonoBehaviour
 {
     public AnimationCurve expandCurve;
     public Vector3 originalPosition;
