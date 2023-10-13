@@ -75,10 +75,10 @@ public class PlayerScript : MonoBehaviour
 
         if (joystick != null)
         {
-            bool down = joystick.allControls[2].IsActuated();
-            bool up = joystick.allControls[3].IsActuated();
-            bool left = joystick.allControls[4].IsActuated();
-            bool right = joystick.allControls[5].IsActuated();
+            bool right = joystick.allControls[1].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[5].IsActuated();
+            bool down = joystick.allControls[2].IsActuated() || joystick.allControls[6].IsActuated() || joystick.allControls[5].IsActuated();
+            bool up = joystick.allControls[3].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[7].IsActuated();
+            bool left = joystick.allControls[4].IsActuated() || joystick.allControls[7].IsActuated() || joystick.allControls[6].IsActuated(); 
 
             transform.position += new Vector3(
                 0.0f,
