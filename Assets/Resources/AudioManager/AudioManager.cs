@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     public const float NORMAL_TIME = 1f;
 
     [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource musicSourceGravity;
     [SerializeField] private AudioSource effectsSource;
     [SerializeField] private AudioSource heartBeatAudioSource;
     public float reducedVolume = 0.1f;
@@ -85,6 +86,22 @@ public class AudioManager : MonoBehaviour
         }
 
         musicSource.pitch = targetPitch;
+    }
+
+    public void UseGravityMusic(bool useGravityMusic)
+    {
+        if (useGravityMusic && musicSource.isPlaying)
+        {
+            musicSource.Stop();
+            musicSourceGravity.Play();
+
+        }
+        else if (!useGravityMusic && musicSourceGravity.isPlaying)
+        {
+            musicSourceGravity.Stop();
+            musicSource.Play();
+
+        }
     }
 
     public float GetMasterVolume()

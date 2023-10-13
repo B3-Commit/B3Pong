@@ -167,6 +167,7 @@ public class Ball : MonoBehaviour
     {
         useGravity = enable;
         GetComponent<Rigidbody2D>().gravityScale = useGravity ? 1.0f : 0;
+        AudioManager.Instance.UseGravityMusic(enable);
     }
 
     public IEnumerator DisableGravityAfterDelay()
