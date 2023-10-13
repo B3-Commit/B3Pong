@@ -23,6 +23,8 @@ public class GameManagerScript : MonoBehaviour
     public List<PlayerScore> playerScores;
     bool isGameResetting = false;
     bool isGoalAllowed = true;
+    bool reloadSceneOnUnpause = false;
+
 
     float startFixedDeltaTime;
     float timeScale;
@@ -36,6 +38,7 @@ public class GameManagerScript : MonoBehaviour
             
             GoalScript.goalEvent += OnGoal;
             MidlineScript.MidlineCrossed += EnableGoalAllowed;
+            SettingsManagerScript.PauseTriggered += OnPauseTriggered;
             SlowMoManagerScript.SetTimeScale += SetTimeScale;
 
             startFixedDeltaTime = Time.fixedDeltaTime;
@@ -64,6 +67,7 @@ public class GameManagerScript : MonoBehaviour
             Instance = null;
             GoalScript.goalEvent -= OnGoal;
             MidlineScript.MidlineCrossed -= EnableGoalAllowed;
+            SettingsManagerScript.PauseTriggered -= OnPauseTriggered;
             SlowMoManagerScript.SetTimeScale -= SetTimeScale;
         }
     }
@@ -98,7 +102,14 @@ public class GameManagerScript : MonoBehaviour
 
     void OnNewGameEvent()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (SettingsManagerScript.instance.IsPaused())
+        {
+            reloadSceneOnUnpause = true;
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     private void SetTimeScale(float newTimeScale)
@@ -119,4 +130,12 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public bool IsGoalAllowed() { return isGoalAllowed; }
+
+    void OnPauseTriggered(bool paused)
+    {
+        if (!paused && reloadSceneOnUnpause)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
 }

@@ -10,6 +10,9 @@ public class SettingsManagerScript : MonoBehaviour
 {
     public static SettingsManagerScript instance;
 
+    public static event Action<bool> PauseTriggered;
+
+
     GameObject ballGameObj = null;
     GameObject ballSpeedTextGameObj = null;
     GameObject pauseTextGameObj = null;
@@ -65,28 +68,35 @@ public class SettingsManagerScript : MonoBehaviour
             {
                 pauseTextGameObj = GameObject.Find("PauseText");
             }
-            var pauseScript = pauseTextGameObj.GetComponent<ControlsTextScript>();
-            var ballSpeedScript = ballSpeedTextGameObj.GetComponent<BallSpeedTextScript>();
 
-            if (isPaused)
-            {
-                // Resume game
-                Time.timeScale = this.timeScale;
-                isPaused = false;
-                pauseScript.TriggerAndFade();
-                ballSpeedScript.TriggerAndFade();
-            }
-            else
-            {
-                // Pause game
-                this.timeScale = Time.timeScale;
-                Time.timeScale = 0f;
-                isPaused = true;
-                pauseScript.ShowText();
-                ballSpeedScript.ShowText();
-            }
+            TogglePause();
+        }
+    }
+
+    private void TogglePause()
+    {
+        var pauseScript = pauseTextGameObj.GetComponent<ControlsTextScript>();
+        var ballSpeedScript = ballSpeedTextGameObj.GetComponent<BallSpeedTextScript>();
+
+        isPaused = !isPaused;
+        if (isPaused)
+        {
+            // Pause game
+            this.timeScale = Time.timeScale;
+            Time.timeScale = 0f;
+            pauseScript.ShowText();
+            ballSpeedScript.ShowText();
+        }
+        else
+        {
+            // Resume game
+            Time.timeScale = this.timeScale;
+            pauseScript.TriggerAndFade();
+            ballSpeedScript.TriggerAndFade();
         }
 
-
+        PauseTriggered(isPaused);
     }
+
+    public bool IsPaused() { return isPaused; }
 }

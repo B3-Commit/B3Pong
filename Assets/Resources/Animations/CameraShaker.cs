@@ -9,11 +9,17 @@ public class CameraShake : MonoBehaviour
     public float duration;
     public float magnitude;
 
+    private void Start()
+    {
+        
+    }
+
     public IEnumerator Shake()
     {
         float elapsedTime = 0f;
 
-        while (elapsedTime < duration)
+        // Interrupt animation if game pauses
+        while (elapsedTime < duration && !SettingsManagerScript.instance.IsPaused())
         {
             float curveValue = expandCurve.Evaluate(elapsedTime / duration);
             float xOffset = Random.Range(-0.5f, 0.5f) * magnitude * curveValue;
