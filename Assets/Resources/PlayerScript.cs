@@ -71,6 +71,29 @@ public class PlayerScript : MonoBehaviour
         var gamepad = Gamepad.all.ElementAtOrDefault(gamepadId);
         var keyboard = Keyboard.current;
 
+        Joystick joystick = Joystick.all.ElementAtOrDefault(gamepadId); ;
+
+        if (joystick != null)
+        {
+            bool down = joystick.allControls[2].IsActuated();
+            bool up = joystick.allControls[3].IsActuated();
+            bool left = joystick.allControls[4].IsActuated();
+            bool right = joystick.allControls[5].IsActuated();
+
+            transform.position += new Vector3(
+                0.0f,
+                Time.deltaTime * PADDLE_SPEED * ((up ? 1.0f : 0.0f) + (down ? -1.0f : 0.0f)),
+                0.0f);
+
+            if (right)
+            {
+                rigidBody.angularVelocity += Time.deltaTime * MAX_ANGLE_ACC;
+            }
+            if (left)
+            { 
+                rigidBody.angularVelocity += Time.deltaTime * MAX_ANGLE_ACC * -1f;
+            }
+        }
         if (gamepad != null)
         {
             var move = gamepad.rightStick.ReadValue();

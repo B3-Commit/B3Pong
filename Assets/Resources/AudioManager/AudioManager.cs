@@ -30,6 +30,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        SlowMoManagerScript.SetTimeScale -= SetMusicSpeed;
+    }
+
+
     private void Start()
     {
         defaultMusicVolume = AudioManager.Instance.GetMusicVolume();
