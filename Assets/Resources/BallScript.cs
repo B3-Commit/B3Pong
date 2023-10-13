@@ -17,8 +17,11 @@ public class Ball : MonoBehaviour
     public const float TIME_SIZE_DECR = 2e-3f;
     public const float BALL_SIZE_RESTORE_TIME = 4f; // seconds
     public const float DEFAULT_SIZE = 4.0f;
+    public const float MINIMUM_ENERGY = 40;
 
     private int speedAsPercent = 100;
+    private float defaultMass;
+    private bool useGravity = false;
 
     [SerializeField] private AudioClip bounceSound;
 
@@ -33,10 +36,17 @@ public class Ball : MonoBehaviour
         float y = 0.01f * (float)Random.Range(0, 100 * currentMinimumSpeed);
 
         rigidBody.velocity = new Vector2(x, y);
+        defaultMass = rigidBody.mass;
+        ToggleGravity(false);
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            ToggleGravity();
+        }
+
         var rigidBody = GetComponent<Rigidbody2D>();
         if (transform.localScale.y > DEFAULT_SIZE)
         {
@@ -45,23 +55,41 @@ public class Ball : MonoBehaviour
             transform.localScale -= new Vector3(shrinkage, shrinkage, 0);
         }
 
+        // To avoid energy loss, there needs to be a minimum velocity
         float timeScaler = 2f;
-        // To keep the flow going, there needs to be a minimum x velocity
         var speed = rigidBody.velocity.magnitude;
-        if (speed < currentMinimumSpeed)
+        if (!useGravity && speed < currentMinimumSpeed)
         {
             rigidBody.velocity += rigidBody.velocity * Time.deltaTime * timeScaler;
         }
-        else if (System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed / 2.0f)
+
+        // There also needs to be a minimum x-velocity for the sake of the gameplay
+        if (System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed / 2.0f)
         {
             var speedDelta = Mathf.Sign(rigidBody.velocity.x) * Time.deltaTime * timeScaler;
             rigidBody.velocity = new Vector2(
                 rigidBody.velocity.x + speedDelta,
                 rigidBody.velocity.y);
         }
-        else if(speed > currentMaximumSpeed)
+
+        if (useGravity)
         {
-            rigidBody.velocity = rigidBody.velocity / speed * currentMaximumSpeed;
+            // If the energy of the ball is too low, increase the velocity along y axis.
+            // This is to increase bounce, not just speed. Use the default mass to not
+            // reduce movement if the ball is bigger. E = mv^2/2 + mgh
+            var heightFromFloor = transform.position.y + 5; // Floor = -5
+            float energy = defaultMass * (speed * speed / 2 + Physics2D.gravity.magnitude * heightFromFloor);
+            if (energy < MINIMUM_ENERGY)
+            {
+                float deltaY = Mathf.Sign(rigidBody.velocity.y) * rigidBody.velocity.magnitude * Time.deltaTime * timeScaler;
+                rigidBody.velocity += new Vector2(0, deltaY);
+            }
+
+            // Do we need to handle a maximum energy case?
+        }
+        else if (speed > currentMaximumSpeed)
+        {
+            rigidBody.velocity *= currentMaximumSpeed / speed;
         }
     }
 
@@ -116,5 +144,16 @@ public class Ball : MonoBehaviour
         {
             Debug.Assert(false, "Unknown power up hit ball");
         }
+    }
+
+    public void ToggleGravity()
+    {
+        ToggleGravity(!useGravity);
+    }
+
+    public void ToggleGravity(bool enable)
+    {
+        useGravity = enable;
+        GetComponent<Rigidbody2D>().gravityScale = useGravity ? 1.0f : 0;
     }
 }
