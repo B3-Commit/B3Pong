@@ -44,7 +44,7 @@ public class Ball : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            ToggleGravity();
+            ToggleGravity(!useGravity);
         }
 
         var rigidBody = GetComponent<Rigidbody2D>();
@@ -140,20 +140,38 @@ public class Ball : MonoBehaviour
         {
             transform.localScale += new Vector3(POWER_UP_SIZE_INCR, POWER_UP_SIZE_INCR, 0);
         }
+        else if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.Gravity)
+        {
+            // If gravity is enabled, disable it
+            // Otherwise, enable it and schedule its disabling.
+            StopCoroutine(DisableGravityAfterDelay());
+            
+            if (useGravity)
+            {
+                ToggleGravity(false);
+            }
+            else
+            {
+                ToggleGravity(true);
+                StartCoroutine(DisableGravityAfterDelay());
+
+            }
+        }
         else
         {
-            Debug.Assert(false, "Unknown power up hit ball");
+            Debug.Assert(false, "Unknown power up hit ball: " + powerUp.powerUpType);
         }
-    }
-
-    public void ToggleGravity()
-    {
-        ToggleGravity(!useGravity);
     }
 
     public void ToggleGravity(bool enable)
     {
         useGravity = enable;
         GetComponent<Rigidbody2D>().gravityScale = useGravity ? 1.0f : 0;
+    }
+
+    public IEnumerator DisableGravityAfterDelay()
+    {
+        yield return new WaitForSeconds(10);
+        ToggleGravity(false);
     }
 }

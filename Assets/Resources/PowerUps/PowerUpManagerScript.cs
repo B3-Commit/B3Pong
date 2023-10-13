@@ -13,9 +13,10 @@ public class PowerUpManagerScript : MonoBehaviour
         PaddleEnlarge = 0,
         BallEnlarge,
         RoundedPaddle,
+        Gravity,
     }
 
-    List<int> typeProbabilityWeights = new () { 10, 10, 10 }; // TODO restore
+    List<int> typeProbabilityWeights = new () {10, 10, 10, 5};
     List<PowerUpType> weightedTypeList = new ();
 
     // Start is called before the first frame update
@@ -51,6 +52,9 @@ public class PowerUpManagerScript : MonoBehaviour
                     break;
                 case PowerUpType.RoundedPaddle:
                     RoundedPaddlePowerUp.Create(GetPosition(), transform);
+                    break;
+                case PowerUpType.Gravity:
+                    GravityPowerUp.Create(GetPosition(), transform);
                     break;
                 default:
                     Debug.LogError("Unknown power up type");
