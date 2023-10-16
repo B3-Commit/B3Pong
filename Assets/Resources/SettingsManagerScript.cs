@@ -61,7 +61,6 @@ public class SettingsManagerScript : MonoBehaviour
         }
 
         // Pause functionality
-
         if (Input.GetKeyDown(KeyCode.P))
         {
             if (pauseTextGameObj == null)
@@ -70,6 +69,12 @@ public class SettingsManagerScript : MonoBehaviour
             }
 
             TogglePause();
+        }
+
+        // Toggle music and effects
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            AudioManager.Instance.SetMasterVolume(0f);
         }
     }
 

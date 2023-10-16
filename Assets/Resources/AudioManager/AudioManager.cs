@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
     public float maximumSpeedReduction = 0.2f;
 
     float defaultMusicVolume;
+    bool isMuted;
 
     void Awake()
     {
@@ -58,7 +59,7 @@ public class AudioManager : MonoBehaviour
         else if (heartBeatAudioSource.isPlaying && speed == NORMAL_TIME)
         {
             StopCoroutine("SlowDownMusic");
-            AudioManager.Instance.SetMusicVolume(defaultMusicVolume);
+            SetMusicVolume(defaultMusicVolume);
             musicSource.pitch = 1f;
             heartBeatAudioSource.Stop();
         }
@@ -74,7 +75,7 @@ public class AudioManager : MonoBehaviour
         {
             float lerpFactor = t / duration;
             musicSource.pitch = Mathf.Lerp(startPitch, targetPitch, lerpFactor);
-            AudioManager.Instance.SetMusicVolume(Mathf.Lerp(defaultMusicVolume, defaultMusicVolume * reducedVolume, lerpFactor));
+            SetMusicVolume(Mathf.Lerp(defaultMusicVolume, defaultMusicVolume * reducedVolume, lerpFactor));
             yield return null;
         }
 
@@ -94,6 +95,12 @@ public class AudioManager : MonoBehaviour
             musicSource.Play();
 
         }
+    }
+
+    public void ToggleMute()
+    {
+        isMuted = !isMuted;
+        SetMasterVolume(isMuted ? 0f : 1f);
     }
 
     public float GetMasterVolume()
