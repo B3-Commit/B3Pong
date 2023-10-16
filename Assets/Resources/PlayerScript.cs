@@ -23,10 +23,9 @@ public class PlayerScript : MonoBehaviour
     public Key left = Key.LeftArrow;
     public Key right = Key.RightArrow;
 
-    public const float MAX_ANGLE_ACC = 360.0f;
+    public const float PADDLE_ROTATION_SPEED = 300.0f;
     public const float PADDLE_SPEED = 10.0f;
     public const float Y_POSITION_LIMIT = 4.8f;
-    public const float ANGULAR_VELOCITY_LIMIT = 1e3f;
     public const float POWER_UP_SIZE_INCR = 0.2f; // 20 %
     public const float PADDLE_SIZE_RESTORE_TIME = 40f; // seconds
     public const float DEFAULT_SIZE_RECTANGLE = 1.5f;
@@ -70,69 +69,60 @@ public class PlayerScript : MonoBehaviour
 
         var gamepad = Gamepad.all.ElementAtOrDefault(gamepadId);
         var keyboard = Keyboard.current;
+        Joystick joystick = Joystick.all.ElementAtOrDefault(gamepadId);
 
-        Joystick joystick = Joystick.all.ElementAtOrDefault(gamepadId); ;
+
+        bool rightPressed = false;
+        bool downPressed = false;
+        bool upPressed = false;
+        bool leftPressed = false;
 
         if (joystick != null)
         {
-            bool right = joystick.allControls[1].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[5].IsActuated();
-            bool down = joystick.allControls[2].IsActuated() || joystick.allControls[6].IsActuated() || joystick.allControls[5].IsActuated();
-            bool up = joystick.allControls[3].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[7].IsActuated();
-            bool left = joystick.allControls[4].IsActuated() || joystick.allControls[7].IsActuated() || joystick.allControls[6].IsActuated(); 
-
-            transform.position += new Vector3(
-                0.0f,
-                Time.deltaTime * PADDLE_SPEED * ((up ? 1.0f : 0.0f) + (down ? -1.0f : 0.0f)),
-                0.0f);
-
-            if (right)
-            {
-                rigidBody.angularVelocity += Time.deltaTime * MAX_ANGLE_ACC;
-            }
-            if (left)
-            { 
-                rigidBody.angularVelocity += Time.deltaTime * MAX_ANGLE_ACC * -1f;
-            }
+            leftPressed = joystick.allControls[1].IsActuated() || joystick.allControls[7].IsActuated() || joystick.allControls[6].IsActuated();
+            downPressed = joystick.allControls[2].IsActuated() || joystick.allControls[6].IsActuated() || joystick.allControls[5].IsActuated();
+            upPressed = joystick.allControls[3].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[7].IsActuated();
+            rightPressed = joystick.allControls[4].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[5].IsActuated();
         }
         if (gamepad != null)
         {
             var move = gamepad.rightStick.ReadValue();
-            if (System.Math.Abs(move.y) > 0.2f)
-            {
-                rigidBody.velocity = Vector2.zero;
-                transform.position += new Vector3(
-                    0.0f,
-                    PADDLE_SPEED * Time.deltaTime * move.y,
-                    0.0f);
-            }
-            if (System.Math.Abs(move.x) > 0.2f)
-            {
-                rigidBody.angularVelocity += Time.deltaTime * MAX_ANGLE_ACC * move.x;
-            }
+            rightPressed |= move.x > 0.2f;
+            leftPressed |= move.x < -0.2f;
+            upPressed |= move.y > 0.2f;
+            downPressed |= move.y < -0.2f;
+
         }
-        else if (keyboard != null)
+        if (keyboard != null)
         {
-            if (keyboard[up].isPressed)
-            {
-                rigidBody.velocity = Vector2.zero;
-                transform.position += Vector3.up * PADDLE_SPEED * Time.deltaTime;
-            }
-            if (keyboard[down].isPressed)
-            {
-                rigidBody.velocity = Vector2.zero;
-                transform.position += Vector3.down * PADDLE_SPEED * Time.deltaTime;
-            }
-            if (keyboard[left].isPressed)
-            {
-                rigidBody.angularVelocity += MAX_ANGLE_ACC * Time.deltaTime;
-            }
-            if (keyboard[right].isPressed)
-            {
-                rigidBody.angularVelocity -= MAX_ANGLE_ACC * Time.deltaTime;
-            }
+            rightPressed |= keyboard[right].isPressed;
+            leftPressed |= keyboard[left].isPressed;
+            upPressed |= keyboard[up].isPressed;
+            downPressed |= keyboard[down].isPressed;
         }
+
+        if (upPressed || downPressed)
+        {
+            rigidBody.velocity = Vector2.zero;
+        }
+        transform.position += new Vector3(
+            0.0f,
+            Time.deltaTime * PADDLE_SPEED * 0.7f * ((upPressed ? 1.0f : 0.0f) + (downPressed ? -1.0f : 0.0f)),
+            0.0f);
+
+        if (rightPressed)
+        {
+            rigidBody.angularVelocity -= PADDLE_ROTATION_SPEED * 20.0f * Time.deltaTime;
+        }
+        if (leftPressed)
+        {
+            rigidBody.angularVelocity += PADDLE_ROTATION_SPEED * 20.0f * Time.deltaTime;
+        }
+        rigidBody.angularDrag = !leftPressed && !rightPressed ? 10.0f : 0.0f;
+
+
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
-        rigidBody.angularVelocity = Mathf.Clamp(rigidBody.angularVelocity, -ANGULAR_VELOCITY_LIMIT, ANGULAR_VELOCITY_LIMIT);
+        rigidBody.angularVelocity = Mathf.Clamp(rigidBody.angularVelocity, -PADDLE_ROTATION_SPEED, PADDLE_ROTATION_SPEED);
 
     }
 
