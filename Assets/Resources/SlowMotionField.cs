@@ -45,6 +45,7 @@ public class SlowMotionField : MonoBehaviour
     {
         if (collider.gameObject.tag == "Ball")
         {
+            ball.EnableAccelerationX(false);
             AudioManager.Instance.SetMusicSpeed(0.3f);
             StartCoroutine(updateTimeCoroutine);
         }
@@ -54,6 +55,7 @@ public class SlowMotionField : MonoBehaviour
     {
         if (collider.gameObject.tag == "Ball")
         {
+            ball.EnableAccelerationX(true);
             StopCoroutine(updateTimeCoroutine);
             AudioManager.Instance.SetMusicSpeed(1f);
             SetTimeScale(1.0f);

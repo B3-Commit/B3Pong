@@ -22,6 +22,7 @@ public class Ball : MonoBehaviour
     private int speedAsPercent = 100;
     private float defaultMass;
     private bool useGravity = false;
+    private bool m_accelerationEnabled = false;
 
     [SerializeField] private AudioClip bounceSound;
 
@@ -58,13 +59,13 @@ public class Ball : MonoBehaviour
         // To avoid energy loss, there needs to be a minimum velocity
         float timeScaler = 2f;
         var speed = rigidBody.velocity.magnitude;
-        if (!useGravity && speed < currentMinimumSpeed)
+        if (!useGravity && m_accelerationEnabled && speed < currentMinimumSpeed)
         {
             rigidBody.velocity += rigidBody.velocity * Time.deltaTime * timeScaler;
         }
 
         // There also needs to be a minimum x-velocity for the sake of the gameplay
-        if (System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed / 2.0f)
+        if (m_accelerationEnabled && System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed / 2.0f)
         {
             var speedDelta = Mathf.Sign(rigidBody.velocity.x) * Time.deltaTime * timeScaler;
             rigidBody.velocity = new Vector2(
@@ -174,5 +175,10 @@ public class Ball : MonoBehaviour
     {
         yield return new WaitForSeconds(10);
         ToggleGravity(false);
+    }
+
+    public void EnableAccelerationX(bool enable)
+    {
+        m_accelerationEnabled = enable;
     }
 }
