@@ -14,6 +14,9 @@ public abstract class PowerUp : MonoBehaviour
             InternalOnTrigger(collider);
             Destroy(gameObject);
         }
+        else if (collider.gameObject.TryGetComponent<BallDecoy>(out var decoy)) {
+            // Do nothing
+        }
         else
         {
             // Nothing else is supposed to be able to trigger the power up

@@ -24,7 +24,7 @@ public class PlayerScript : MonoBehaviour
     public Key right = Key.RightArrow;
 
     public const float PADDLE_ROTATION_SPEED = 300.0f;
-    public const float PADDLE_SPEED = 10.0f;
+    public const float PADDLE_SPEED = 7.0f;
     public const float Y_POSITION_LIMIT = 4.8f;
     public const float POWER_UP_SIZE_INCR = 0.2f; // 20 %
     public const float PADDLE_SIZE_RESTORE_TIME = 40f; // seconds
@@ -101,29 +101,24 @@ public class PlayerScript : MonoBehaviour
             downPressed |= keyboard[down].isPressed;
         }
 
-        if (upPressed || downPressed)
-        {
-            rigidBody.velocity = Vector2.zero;
-        }
-        transform.position += new Vector3(
+        rigidBody.velocity = new Vector3(
             0.0f,
-            Time.deltaTime * PADDLE_SPEED * 0.7f * ((upPressed ? 1.0f : 0.0f) + (downPressed ? -1.0f : 0.0f)),
+            Mathf.Clamp(
+                rigidBody.velocity.y + Time.deltaTime * 10.0f * PADDLE_SPEED * ((upPressed ? 1.0f : 0.0f) + (downPressed ? -1.0f : 0.0f)), 
+                -PADDLE_SPEED, 
+                PADDLE_SPEED),
             0.0f);
 
-        if (rightPressed)
-        {
-            rigidBody.angularVelocity -= PADDLE_ROTATION_SPEED * 20.0f * Time.deltaTime;
-        }
-        if (leftPressed)
-        {
-            rigidBody.angularVelocity += PADDLE_ROTATION_SPEED * 20.0f * Time.deltaTime;
-        }
-        rigidBody.angularDrag = !leftPressed && !rightPressed ? 10.0f : 0.0f;
+        rigidBody.angularVelocity = 
+            Mathf.Clamp(
+                rigidBody.angularVelocity + Time.deltaTime * 20.0f * PADDLE_ROTATION_SPEED * ((leftPressed ? 1.0f : 0.0f) + (rightPressed ? -1.0f : 0.0f)), 
+                -PADDLE_ROTATION_SPEED, 
+                PADDLE_ROTATION_SPEED);
 
+        rigidBody.angularDrag = !leftPressed && !rightPressed ? 10.0f : 0.0f;
+        rigidBody.drag = !upPressed && !downPressed? 10.0f : 0.0f;
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
-        rigidBody.angularVelocity = Mathf.Clamp(rigidBody.angularVelocity, -PADDLE_ROTATION_SPEED, PADDLE_ROTATION_SPEED);
-
     }
 
     public void GetPowerUp(PowerUp powerUp)
