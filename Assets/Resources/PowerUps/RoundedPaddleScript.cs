@@ -10,6 +10,7 @@ public class RoundedPaddlePowerUp : PowerUp
         newPowerUpObject.GetComponent<PowerUp>().Activate();
         return newPowerUpObject;
     }
+
     public override void Activate()
     {
         powerUpType = PowerUpType.RoundedPaddle;
@@ -18,12 +19,13 @@ public class RoundedPaddlePowerUp : PowerUp
     protected override void InternalOnTrigger(Collider2D collider)
     {
         // Check if the collider object is a ball
-        var ball = collider.gameObject.GetComponent<Ball>();
-
-        PlayerScript player = ball.lastTouch;
-        if (player != null)
+        if (collider.gameObject.TryGetComponent<Ball>(out var ball))
         {
-            player.GetPowerUp(this);
+            PlayerScript player = ball.lastTouch;
+            if (player != null)
+            {
+                player.GetPowerUp(this);
+            }
         }
     }
 }

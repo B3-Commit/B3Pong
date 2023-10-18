@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +7,11 @@ public class SlowMotionManager : MonoBehaviour
     public Ball ball;
     public List<SlowMotionField> slowMotionFields;
 
+    public static Action<bool> SlowMotionActive;
+
     private float startFixedDeltaTime;
 
-    private bool slowMotionActive = false;
+    private bool slowMotionWasActive = false;
 
     private bool enable = true;
 
@@ -34,6 +37,8 @@ public class SlowMotionManager : MonoBehaviour
         }
 
         var isInsideField = false;
+
+        // Check if we're inside a field and set the new time scale
         foreach (var field in slowMotionFields)
         {
             if (field.IsPointInsideField(ball.transform.position))
@@ -45,13 +50,19 @@ public class SlowMotionManager : MonoBehaviour
             }
         }
 
-        // Slow motion was active but we're no longer inside a field
-        if (slowMotionActive && !isInsideField)
+        // If we're inside a filed and slow motion wasn't active before
+        if (isInsideField && !slowMotionWasActive)
+        {
+            SlowMotionActive(true);
+        }
+        // If we're not inside a field and slow motion was active before
+        else if (!isInsideField && slowMotionWasActive)
         {
             RestoreTime();
+            SlowMotionActive(false);
         }
 
-        slowMotionActive = isInsideField;
+        slowMotionWasActive = isInsideField;
     }
 
     private void OnMidlineCrossed()
@@ -62,9 +73,10 @@ public class SlowMotionManager : MonoBehaviour
     private void OnGoal(PlayerScript script)
     {
         enable = false;
-        if (slowMotionActive)
+        if (slowMotionWasActive)
         {
             RestoreTime();
+            SlowMotionActive(false);
         }
     }
 

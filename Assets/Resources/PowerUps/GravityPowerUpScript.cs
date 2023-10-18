@@ -10,6 +10,7 @@ public class GravityPowerUp : PowerUp
         newPowerUpObject.GetComponent<PowerUp>().Activate();
         return newPowerUpObject;
     }
+
     public override void Activate()
     {
         powerUpType = PowerUpType.Gravity;
@@ -18,8 +19,9 @@ public class GravityPowerUp : PowerUp
     protected override void InternalOnTrigger(Collider2D collider)
     {
         // Check if the collider object is a ball
-        var ball = collider.gameObject.GetComponent<Ball>();
-        ball.GetPowerUp(this);
+        if (collider.gameObject.TryGetComponent<Ball>(out var ball))
+        {
+            ball.GetPowerUp(this);
+        }
     }
 }
-

@@ -1,19 +1,19 @@
 using UnityEngine;
 using static PowerUpManagerScript;
 
-public class PaddleEnlargePowerUp : PowerUp
+public class BallSplitPowerUp : PowerUp
 {
     public static GameObject Create(Vector3 pos, Transform parent)
     {
         GameObject newPowerUpObject = Instantiate(Resources.Load<GameObject>(
-            "PowerUps/PaddleEnlargePrefab"), pos, Quaternion.identity, parent);
+            "PowerUps/BallSplitPrefab"), pos, Quaternion.identity, parent);
         newPowerUpObject.GetComponent<PowerUp>().Activate();
         return newPowerUpObject;
     }
 
     public override void Activate()
     {
-        powerUpType = PowerUpType.PaddleEnlarge;
+        powerUpType = PowerUpType.BallSplit;
     }
 
     protected override void InternalOnTrigger(Collider2D collider)
@@ -21,10 +21,10 @@ public class PaddleEnlargePowerUp : PowerUp
         // Check if the collider object is a ball
         if (collider.gameObject.TryGetComponent<Ball>(out var ball))
         {
-            PlayerScript player = ball.lastTouch;
-            if (player != null)
+            for (int i = 0; i < 3; i++)
             {
-                player.GetPowerUp(this);
+                Instantiate(Resources.Load<GameObject>(
+                    "BallDecoyPrefab"), ball.transform.position, ball.transform.rotation);
             }
         }
     }

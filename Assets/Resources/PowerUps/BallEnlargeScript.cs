@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using static PowerUpManagerScript;
 
 public class BallEnlargePowerUp : PowerUp
@@ -10,6 +11,7 @@ public class BallEnlargePowerUp : PowerUp
         newPowerUpObject.GetComponent<PowerUp>().Activate();
         return newPowerUpObject;
     }
+
     public override void Activate()
     {
         powerUpType = PowerUpType.BallEnlarge;
@@ -18,7 +20,9 @@ public class BallEnlargePowerUp : PowerUp
     protected override void InternalOnTrigger(Collider2D collider)
     {
         // Check if the collider object is a ball
-        var ball = collider.gameObject.GetComponent<Ball>();
-        ball.GetPowerUp(this);
+        if (collider.gameObject.TryGetComponent<Ball>(out var ball))
+        {
+            ball.GetPowerUp(this);
+        }
     }
 }

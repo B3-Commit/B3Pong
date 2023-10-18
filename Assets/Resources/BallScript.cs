@@ -39,6 +39,8 @@ public class Ball : MonoBehaviour
         rigidBody.velocity = new Vector2(x, y);
         defaultMass = rigidBody.mass;
         ToggleGravity(false);
+
+        SlowMotionManager.SlowMotionActive += OnSlowMotionActive;
     }
 
     void Update()
@@ -177,8 +179,8 @@ public class Ball : MonoBehaviour
         ToggleGravity(false);
     }
 
-    public void EnableAccelerationX(bool enable)
+    public void OnSlowMotionActive(bool active)
     {
-        m_accelerationEnabled = enable;
+        m_accelerationEnabled = !active;
     }
 }

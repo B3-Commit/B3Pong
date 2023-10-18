@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2963328980265422580}
   - component: {fileID: -7906326771133815161}
-  - component: {fileID: 2944712575848086846}
+  - component: {fileID: 1905717783755727155}
   - component: {fileID: 604006424344353646}
   - component: {fileID: 8483450272033776094}
   - component: {fileID: -6043435103499144035}
   - component: {fileID: 1141908004729409710}
   m_Layer: 7
-  m_Name: BallPrefab
+  m_Name: BallDecoyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,7 +89,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2944712575848086846
+--- !u!114 &1905717783755727155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,13 +98,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 915301240017294634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20b40ccd0aa08964b8d317e78dee8846, type: 3}
+  m_Script: {fileID: 11500000, guid: 158fcc0b6493ade42b8219b06b3a8fbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastTouch: {fileID: 0}
-  currentMinimumSpeed: 0
-  currentMaximumSpeed: 0
-  ballSpeedText: {fileID: 0}
   bounceSound: {fileID: 8300000, guid: 4287a650d3af63d4a89b9750deaee186, type: 3}
 --- !u!50 &604006424344353646
 Rigidbody2D:
@@ -128,7 +124,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
