@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -25,23 +26,21 @@ public class GameManagerScript : MonoBehaviour
     bool isGoalAllowed = true;
     bool reloadSceneOnUnpause = false;
 
-
     void Awake()
     {
         if (Instance == null)
         {
             // This class will be recreated on scene load, so no DontDestroyOnLoad should be used
             Instance = this;
-            
+
             GoalScript.goalEvent += OnGoal;
-            MidlineScript.MidlineCrossed += EnableGoalAllowed;
+            MidlineScript.MidlineCrossed += OnMidlineCrossed;
             SettingsManagerScript.PauseTriggered += OnPauseTriggered;
         }
         else
         {
             Destroy(gameObject);
         }
-
     }
 
     private void OnDestroy()
@@ -50,12 +49,12 @@ public class GameManagerScript : MonoBehaviour
         {
             Instance = null;
             GoalScript.goalEvent -= OnGoal;
-            MidlineScript.MidlineCrossed -= EnableGoalAllowed;
+            MidlineScript.MidlineCrossed -= OnMidlineCrossed;
             SettingsManagerScript.PauseTriggered -= OnPauseTriggered;
         }
     }
 
-    private void EnableGoalAllowed()
+    private void OnMidlineCrossed()
     {
         isGoalAllowed = true;
     }
@@ -67,9 +66,10 @@ public class GameManagerScript : MonoBehaviour
         if (!isGoalAllowed) return;
 
         playerScores[player.playerId].score++;
+
         isGoalAllowed = false;
 
-        // Shake camera
+        // Shake cameras
         StartCoroutine(Camera.main.GetComponent<ShakeAnimation>().Shake());
 
         if (playerScores[player.playerId].score >= maxScore)
@@ -102,8 +102,6 @@ public class GameManagerScript : MonoBehaviour
             player.scoreText.GetComponent<TextMeshProUGUI>().text = player.score.ToString();
         }
     }
-
-    public bool IsGoalAllowed() { return isGoalAllowed; }
 
     void OnPauseTriggered(bool paused)
     {

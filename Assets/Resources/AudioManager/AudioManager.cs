@@ -51,35 +51,24 @@ public class AudioManager : MonoBehaviour
 
     public void SetMusicSpeed(float speed)
     {
-        if (!heartBeatAudioSource.isPlaying && speed < NORMAL_TIME)
+        SetMusicVolume(speed);
+        SetMusicPitch(speed);
+    }
+
+    public void StartHeartBeat()
+    {
+        if (!heartBeatAudioSource.isPlaying)
         {
-            StartCoroutine("SlowDownMusic");
             heartBeatAudioSource.Play();
-        }
-        else if (heartBeatAudioSource.isPlaying && speed == NORMAL_TIME)
-        {
-            StopCoroutine("SlowDownMusic");
-            SetMusicVolume(defaultMusicVolume);
-            musicSource.pitch = 1f;
-            heartBeatAudioSource.Stop();
         }
     }
 
-    private IEnumerator SlowDownMusic()
+    public void StopHeartBeat()
     {
-        float duration = 0.3f;
-        float targetPitch = 0.9f;
-        float startPitch = 1;
-
-        for (float t = 0; t < duration; t += Time.deltaTime)
+        if (heartBeatAudioSource.isPlaying)
         {
-            float lerpFactor = t / duration;
-            musicSource.pitch = Mathf.Lerp(startPitch, targetPitch, lerpFactor);
-            SetMusicVolume(Mathf.Lerp(defaultMusicVolume, defaultMusicVolume * reducedVolume, lerpFactor));
-            yield return null;
+            heartBeatAudioSource.Stop();
         }
-
-        musicSource.pitch = targetPitch;
     }
 
     public void UseGravityMusic(bool useGravityMusic)
