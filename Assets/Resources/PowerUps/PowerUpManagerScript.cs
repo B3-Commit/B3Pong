@@ -80,10 +80,4 @@ public class PowerUpManagerScript : MonoBehaviour
         int randomIndex = Random.Range(0, weightedTypeList.Count);
         return weightedTypeList[randomIndex];
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

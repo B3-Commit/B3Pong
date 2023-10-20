@@ -40,6 +40,8 @@ public class Ball : MonoBehaviour
         defaultMass = rigidBody.mass;
         ToggleGravity(false);
 
+        BallEnlargePowerUp.BallEnlargePickup += OnBallEnlargePickup;
+        GravityPowerUp.GravityPickup += OnGravityPickup;
         SlowMotionManager.SlowMotionActive += OnSlowMotionActive;
     }
 
@@ -137,32 +139,25 @@ public class Ball : MonoBehaviour
         currentMaximumSpeed = DEFAULT_MAXIMUM_SPEED * speedAsPercent / 100;
     }
 
-    public void GetPowerUp(PowerUp powerUp)
+    private void OnBallEnlargePickup()
     {
-        if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.BallEnlarge)
-        {
-            transform.localScale += new Vector3(POWER_UP_SIZE_INCR, POWER_UP_SIZE_INCR, 0);
-        }
-        else if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.Gravity)
-        {
-            // If gravity is enabled, disable it
-            // Otherwise, enable it and schedule its disabling.
-            StopCoroutine(DisableGravityAfterDelay());
-            
-            if (useGravity)
-            {
-                ToggleGravity(false);
-            }
-            else
-            {
-                ToggleGravity(true);
-                StartCoroutine(DisableGravityAfterDelay());
+        transform.localScale += new Vector3(POWER_UP_SIZE_INCR, POWER_UP_SIZE_INCR, 0);
+    }
 
-            }
+    private void OnGravityPickup()
+    {
+        // If gravity is enabled, disable it
+        // Otherwise, enable it and schedule its disabling.
+        StopCoroutine(DisableGravityAfterDelay());
+
+        if (useGravity)
+        {
+            ToggleGravity(false);
         }
         else
         {
-            Debug.Assert(false, "Unknown power up hit ball: " + powerUp.powerUpType);
+            ToggleGravity(true);
+            StartCoroutine(DisableGravityAfterDelay());
         }
     }
 

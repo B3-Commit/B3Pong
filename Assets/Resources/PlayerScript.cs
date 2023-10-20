@@ -43,6 +43,9 @@ public class PlayerScript : MonoBehaviour
         Debug.Assert(playerName != null);
         Debug.Assert(playerId != -1);
 
+        PaddleEnlargePowerUp.PaddleEnlargePickup += OnPaddleEnlargePickup;
+        RoundedPaddlePowerUp.RoundedPaddlePickup += OnRoundedPaddlePickup;
+
         // Save the two sprites as variables
         originalSprite = gameObject.GetComponent<SpriteRenderer>().sprite;
         ellipseSprite = Resources.Load<Sprite>("Sprites/ellipsis");
@@ -121,24 +124,20 @@ public class PlayerScript : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
     }
 
-    public void GetPowerUp(PowerUp powerUp)
+    private void OnPaddleEnlargePickup(int playerId)
     {
-        if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.PaddleEnlarge)
-        {
-            paddleSizeRatioFromPowerUps += POWER_UP_SIZE_INCR;
-            float newY = currentDefaultSize * paddleSizeRatioFromPowerUps;
-            transform.localScale = new Vector3(transform.localScale.x, newY, 0);
-        }
-        else if (powerUp.powerUpType == PowerUpManagerScript.PowerUpType.RoundedPaddle)
-        {
-            TurnIntoEllipse();
-            StopCoroutine("RestoreToRectangleAfterDelay");
-            StartCoroutine("RestoreToRectangleAfterDelay");
-        }
-        else
-        {
-            Debug.Assert(false, "Unknown power up hit player");
-        }
+        if (playerId != this.playerId) { return; }
+        paddleSizeRatioFromPowerUps += POWER_UP_SIZE_INCR;
+        float newY = currentDefaultSize * paddleSizeRatioFromPowerUps;
+        transform.localScale = new Vector3(transform.localScale.x, newY, 0);
+    }
+
+    private void OnRoundedPaddlePickup(int playerId)
+    {
+        if (playerId != this.playerId) { return; }
+        TurnIntoEllipse();
+        StopCoroutine("RestoreToRectangleAfterDelay");
+        StartCoroutine("RestoreToRectangleAfterDelay");
     }
 
     void TurnIntoEllipse()
