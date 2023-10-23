@@ -50,3 +50,9 @@ TagManager:
   - name: Powerups
     uniqueID: 3196772713
     locked: 0
+  - name: Shadow
+    uniqueID: 196347269
+    locked: 0
+  - name: UI
+    uniqueID: 2464469867
+    locked: 0
