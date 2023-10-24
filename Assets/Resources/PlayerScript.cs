@@ -55,6 +55,11 @@ public class PlayerScript : MonoBehaviour
         polyCollider.SetPath(0, Utilities.GetEllipseVectorPoints());
         polyCollider.enabled = false;
     }
+    private void OnDestroy()
+    {
+        PaddleEnlargePowerUp.PaddleEnlargePickup -= OnPaddleEnlargePickup;
+        RoundedPaddlePowerUp.RoundedPaddlePickup -= OnRoundedPaddlePickup;
+    }
 
     // Update is called once per frame
     void Update()

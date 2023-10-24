@@ -45,6 +45,13 @@ public class Ball : MonoBehaviour
         SlowMotionManager.SlowMotionActive += OnSlowMotionActive;
     }
 
+    private void OnDestroy()
+    {
+        BallEnlargePowerUp.BallEnlargePickup -= OnBallEnlargePickup;
+        GravityPowerUp.GravityPickup -= OnGravityPickup;
+        SlowMotionManager.SlowMotionActive -= OnSlowMotionActive;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.G))
