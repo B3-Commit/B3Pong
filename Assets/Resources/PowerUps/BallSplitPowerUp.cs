@@ -13,8 +13,8 @@ public class BallSplitPowerUp : PowerUp
     {
         for (int i = 0; i < 3; i++)
         {
-            Instantiate(Resources.Load<GameObject>(
-                "BallDecoyPrefab"), ball.transform.position, ball.transform.rotation);
+            GameObject decoy = Instantiate(Resources.Load<GameObject>("BallDecoyPrefab"), ball.transform.position, ball.transform.rotation);
+            decoy.transform.localScale = ball.transform.localScale;
         }
     }
 }

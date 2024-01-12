@@ -17,7 +17,7 @@ public class PowerUpManagerScript : MonoBehaviour
         BallSplit
     }
 
-    List<int> typeProbabilityWeights = new () {10, 10, 10, 5, 10};
+    List<int> typeProbabilityWeights = new () {10, 10, 3, 5, 10};
     List<PowerUpType> weightedTypeList = new ();
 
     // Start is called before the first frame update
