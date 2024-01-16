@@ -16,13 +16,14 @@ public class SettingsManagerScript : MonoBehaviour
     GameObject ballGameObj = null;
     GameObject ballSpeedTextGameObj = null;
     GameObject pauseTextGameObj = null;
+    GameObject countDownTextGameObj = null;
 
     int ballSpeedAsPercent = 100;
     bool isPaused = false;
-    float timeScale;
+    private Coroutine startedCountdown;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -45,10 +46,6 @@ public class SettingsManagerScript : MonoBehaviour
             ballGameObj = GameObject.Find("Ball");
             ballGameObj.GetComponent<Ball>().ChangeBallSpeed(ballSpeedAsPercent);
         }
-        if (ballSpeedTextGameObj == null)
-        {
-            ballSpeedTextGameObj = GameObject.Find("BallSpeedText");
-        }
 
         if (Input.GetKeyDown(KeyCode.KeypadPlus))
         {
@@ -63,12 +60,17 @@ public class SettingsManagerScript : MonoBehaviour
         // Pause functionality
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (pauseTextGameObj == null)
-            {
-                pauseTextGameObj = GameObject.Find("PauseText");
-            }
-
             TogglePause();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && isPaused)
+        {
+            UnpauseWithCountdown();
         }
 
         // Toggle music and effects
@@ -78,24 +80,80 @@ public class SettingsManagerScript : MonoBehaviour
         }
     }
 
+    public void UnpauseWithCountdown()
+    {
+        if (startedCountdown != null)
+        {
+            StopCoroutine(startedCountdown);
+        }
+        startedCountdown = StartCoroutine(CountdownToUnpause());
+    }
+
+    public IEnumerator CountdownToUnpause()
+    {
+        float elapsedTime = 0f;
+        float duration = 3f;
+
+        if (countDownTextGameObj == null)
+        {
+            countDownTextGameObj = GameObject.Find("CountdownText");
+        }
+        countDownTextGameObj.GetComponent<TextMeshProUGUI>().enabled = true;
+
+        while (elapsedTime < duration && SettingsManagerScript.instance.IsPaused())
+        {
+            countDownTextGameObj.GetComponent<TextMeshProUGUI>().text = ((int)Math.Ceiling(duration - elapsedTime)).ToShortString(1);
+            elapsedTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        countDownTextGameObj.GetComponent<TextMeshProUGUI>().enabled = false;
+        countDownTextGameObj.GetComponent<TextMeshProUGUI>().text = "";
+        startedCountdown = null;
+
+        if (SettingsManagerScript.instance.IsPaused())
+        { 
+            TriggerPause(false);
+        }
+    }
+
+    private void ResetGame()
+    {
+        GameManagerScript.Instance.OnNewGameEvent();
+    }
+
     private void TogglePause()
     {
+        TriggerPause(!isPaused);
+    }
+
+    public void TriggerPause(bool pause)
+    {
+        if (pause == isPaused) return;
+
+        if (pauseTextGameObj == null)
+        {
+            pauseTextGameObj = GameObject.Find("PauseText");
+        }
+
+        if (ballSpeedTextGameObj == null)
+        {
+            ballSpeedTextGameObj = GameObject.Find("BallSpeedText");
+        }
+
         var pauseScript = pauseTextGameObj.GetComponent<ControlsTextScript>();
         var ballSpeedScript = ballSpeedTextGameObj.GetComponent<BallSpeedTextScript>();
 
-        isPaused = !isPaused;
+        isPaused = pause;
         if (isPaused)
         {
             // Pause game
-            this.timeScale = Time.timeScale;
-            Time.timeScale = 0f;
             pauseScript.ShowText();
             ballSpeedScript.ShowText();
         }
         else
         {
             // Resume game
-            Time.timeScale = this.timeScale;
             pauseScript.TriggerAndFade();
             ballSpeedScript.TriggerAndFade();
         }

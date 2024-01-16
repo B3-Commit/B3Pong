@@ -24,7 +24,6 @@ public class GameManagerScript : MonoBehaviour
     public List<PlayerScore> playerScores;
     bool isGameResetting = false;
     bool isGoalAllowed = true;
-    bool reloadSceneOnUnpause = false;
 
     void Awake()
     {
@@ -36,11 +35,18 @@ public class GameManagerScript : MonoBehaviour
             GoalScript.goalEvent += OnGoal;
             MidlineScript.MidlineCrossed += OnMidlineCrossed;
             SettingsManagerScript.PauseTriggered += OnPauseTriggered;
+            Application.targetFrameRate = 120;
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        SettingsManagerScript.instance.TriggerPause(true);
+        SettingsManagerScript.instance.UnpauseWithCountdown();
     }
 
     private void OnDestroy()
@@ -83,16 +89,12 @@ public class GameManagerScript : MonoBehaviour
         UpdateScoreBoard();
     }
 
-    void OnNewGameEvent()
+
+    public void OnNewGameEvent()
     {
-        if (SettingsManagerScript.instance.IsPaused())
-        {
-            reloadSceneOnUnpause = true;
-        }
-        else
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        SettingsManagerScript.instance.TriggerPause(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SettingsManagerScript.instance.UnpauseWithCountdown();
     }
 
     void UpdateScoreBoard()
@@ -105,9 +107,5 @@ public class GameManagerScript : MonoBehaviour
 
     void OnPauseTriggered(bool paused)
     {
-        if (!paused && reloadSceneOnUnpause)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
     }
 }

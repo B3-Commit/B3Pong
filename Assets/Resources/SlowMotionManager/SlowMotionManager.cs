@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SlowMotionManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class SlowMotionManager : MonoBehaviour
     private bool slowMotionWasActive = false;
 
     private bool enable = true;
+    private float timeScale;
 
     void Awake()
     {
@@ -21,12 +23,14 @@ public class SlowMotionManager : MonoBehaviour
 
         GoalScript.goalEvent += OnGoal;
         MidlineScript.MidlineCrossed += OnMidlineCrossed;
+        SettingsManagerScript.PauseTriggered += OnPauseTriggered;
     }
 
     private void OnDestroy()
     {
         GoalScript.goalEvent -= OnGoal;
         MidlineScript.MidlineCrossed -= OnMidlineCrossed;
+        SettingsManagerScript.PauseTriggered -= OnPauseTriggered;
     }
 
     private void Update()
@@ -95,5 +99,19 @@ public class SlowMotionManager : MonoBehaviour
         Time.fixedDeltaTime = startFixedDeltaTime;
         AudioManager.Instance.SetMusicSpeed(1.0f);
         AudioManager.Instance.StopHeartBeat();
+    }
+
+    private void OnPauseTriggered(bool pause)
+    {
+        enable = !pause;
+        if (pause)
+        {
+            this.timeScale = Time.timeScale;
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+        }
     }
 }

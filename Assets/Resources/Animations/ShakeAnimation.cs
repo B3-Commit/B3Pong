@@ -8,11 +8,6 @@ public class ShakeAnimation : MonoBehaviour
     public float duration;
     public float magnitude;
 
-    private void Start()
-    {
-        
-    }
-
     public IEnumerator Shake()
     {
         float elapsedTime = 0f;

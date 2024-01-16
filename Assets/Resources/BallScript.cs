@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -12,7 +9,7 @@ public class Ball : MonoBehaviour
     public GameObject ballSpeedText;
 
     public const float DEFAULT_MINIMUM_SPEED = 4.5f;
-    public const float DEFAULT_MAXIMUM_SPEED = 10.0f;
+    public const float DEFAULT_MAXIMUM_SPEED = 8.0f;
     public const float POWER_UP_SIZE_INCR = 2f;
     public const float TIME_SIZE_DECR = 2e-3f;
     public const float BALL_SIZE_RESTORE_TIME = 4f; // seconds

@@ -8,10 +8,10 @@ using UnityEngine;
 public class ControlsTextScript : FadingText
 {
     // Start is called before the first frame update
-    override protected void Start()
+    override protected void Awake()
     {
 
-        base.Start();
+        base.Awake();
         Debug.Assert(!string.IsNullOrEmpty(textMesh.text), "Controls text empty");
         base.TriggerAndFade();
     }

@@ -11,7 +11,7 @@ public class FadingText : MonoBehaviour
     public const float fadeDuration = 1.0f;
 
     // Start is called before the first frame update
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         // If textMesh is not set in the editor, use GetComponent to initialize it
         if (textMesh == null)

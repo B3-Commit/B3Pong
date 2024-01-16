@@ -10,9 +10,9 @@ public class BallSpeedTextScript : FadingText
     
 
     // Start is called before the first frame update
-    override protected void Start()
+    override protected void Awake()
     {
-        base.Start();
+        base.Awake();
         base.TriggerAndFade();
     }
 
