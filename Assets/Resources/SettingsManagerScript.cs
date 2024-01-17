@@ -16,6 +16,7 @@ public class SettingsManagerScript : MonoBehaviour
     GameObject ballGameObj = null;
     GameObject ballSpeedTextGameObj = null;
     GameObject pauseTextGameObj = null;
+    GameObject pauseText2GameObj = null;
 
     int ballSpeedAsPercent = 100;
     bool isPaused = false;
@@ -67,6 +68,10 @@ public class SettingsManagerScript : MonoBehaviour
             {
                 pauseTextGameObj = GameObject.Find("PauseText");
             }
+            if (pauseText2GameObj == null)
+            {
+                pauseText2GameObj = GameObject.Find("PauseText2");
+            }
 
             TogglePause();
         }
@@ -81,6 +86,7 @@ public class SettingsManagerScript : MonoBehaviour
     private void TogglePause()
     {
         var pauseScript = pauseTextGameObj.GetComponent<ControlsTextScript>();
+        var pauseScript2 = pauseText2GameObj.GetComponent<ControlsTextScript>();
         var ballSpeedScript = ballSpeedTextGameObj.GetComponent<BallSpeedTextScript>();
 
         isPaused = !isPaused;
@@ -90,6 +96,7 @@ public class SettingsManagerScript : MonoBehaviour
             this.timeScale = Time.timeScale;
             Time.timeScale = 0f;
             pauseScript.ShowText();
+            pauseScript2.ShowText();
             ballSpeedScript.ShowText();
         }
         else
@@ -97,6 +104,7 @@ public class SettingsManagerScript : MonoBehaviour
             // Resume game
             Time.timeScale = this.timeScale;
             pauseScript.TriggerAndFade();
+            pauseScript2.TriggerAndFade();
             ballSpeedScript.TriggerAndFade();
         }
 

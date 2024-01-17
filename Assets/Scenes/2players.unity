@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 228422208}
   - component: {fileID: 228422207}
   m_Layer: 5
-  m_Name: PauseText (1)
+  m_Name: PauseText2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -415,7 +415,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.9256, y: -7.1276}
+  m_AnchoredPosition: {x: 5.9256, y: -7.66}
   m_SizeDelta: {x: 6.6603, y: 1.166}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &228422207
@@ -451,10 +451,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'M: Toggle sound
-
-
-'
+  m_text: "+\u200A:\u200AIncrease ball speed\r\n\u2013\u200A:\u200ADecrease ball
+    speed\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2712,7 +2710,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\n+ : Increase ball speed\r\n\u2013 : Decrease ball speed\r\nP : Pause/Unpause"
+  m_text: "\n\n\u200A\u200AP\u200A:\u200APause/Unpause\nM\u200A:\u200AMute/Unmute"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3029,7 +3027,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.71, y: -8.04}
+  m_AnchoredPosition: {x: 4.71, y: -6.7476}
   m_SizeDelta: {x: 4.229, y: 0.6589}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2026503851
