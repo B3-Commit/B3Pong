@@ -23,7 +23,7 @@ public class PlayerScript : MonoBehaviour
     public Key left = Key.LeftArrow;
     public Key right = Key.RightArrow;
 
-    public const float PADDLE_ROTATION_SPEED = 300.0f;
+    public const float PADDLE_ROTATION_SPEED = 200.0f;
     public const float PADDLE_SPEED = 7.0f;
     public const float Y_POSITION_LIMIT = 4.8f;
     public const float POWER_UP_SIZE_INCR = 0.5f; // 20 %
@@ -36,6 +36,14 @@ public class PlayerScript : MonoBehaviour
     float paddleSizeRatioFromPowerUps = 1;
     float currentDefaultSize = DEFAULT_SIZE_RECTANGLE;
 
+
+    public float MAX_PRESS_TIME = 1.0f; // second
+    public float MINIMUM_DRAG = 10.0f; // Drag when the press time is MAX_PRESS_TIME or more
+    public float MAXIMUM_DRAG = 50.0f; // Drag when the press time is 0
+    public float BALL_CONTACT_DRAG = 7.0f; // Extra low drag when ball hits
+
+    private float pressTimeUpDown = 0.0f;
+    private float pressTimeLeftRight = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -123,10 +131,44 @@ public class PlayerScript : MonoBehaviour
                 -PADDLE_ROTATION_SPEED, 
                 PADDLE_ROTATION_SPEED);
 
-        rigidBody.angularDrag = !leftPressed && !rightPressed ? 10.0f : 0.0f;
-        rigidBody.drag = !upPressed && !downPressed? 10.0f : 0.0f;
+        // When up-down key is released, the drag should be set depending on the time the key has been pressed
+        if (upPressed || downPressed)
+        {
+            // If a key is pressed, increment pressTime and set drag to 0
+            pressTimeUpDown += Time.deltaTime;
+            rigidBody.drag = 0.0f;
+        }
+        else if (pressTimeUpDown > 0)
+        {
+            // If no key is pressed and pressTime is greater than 0, a key was just released
+            // Calculate and apply dynamic drag based on pressTime, then reset pressTime
+            float pressFraction = Mathf.Clamp(pressTimeUpDown / MAX_PRESS_TIME, 0.0f, 1.0f);
+            rigidBody.drag = Mathf.Lerp(MAXIMUM_DRAG, MINIMUM_DRAG, pressFraction);
+            pressTimeUpDown = 0.0f;
+        }
+
+        // Angular drag is set in the same way as translational drag
+        if (leftPressed || rightPressed)
+        {
+            pressTimeLeftRight += Time.deltaTime;
+            rigidBody.angularDrag = 0.0f;
+        }
+        else if (pressTimeLeftRight > 0)
+        {
+            float pressFraction = Mathf.Clamp(pressTimeLeftRight / MAX_PRESS_TIME, 0.0f, 1.0f);
+            rigidBody.angularDrag = Mathf.Lerp(MAXIMUM_DRAG, MINIMUM_DRAG, pressFraction);
+            pressTimeLeftRight = 0.0f;
+        }
 
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
+    }
+
+    public void resetDrag()
+    {
+        var rigidBody = GetComponent<Rigidbody2D>();
+
+        rigidBody.angularDrag = BALL_CONTACT_DRAG;
+        rigidBody.drag = BALL_CONTACT_DRAG;
     }
 
     private void OnPaddleEnlargePickup(int playerId)

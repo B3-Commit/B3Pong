@@ -23,7 +23,9 @@ public class ControlsTextScript : FadingText
 }
 
 
-//TODO fixa puase 2 text
-//    lägre defaulttempo
+// TODO
+//    fixa pause 2 text
 //    visuellt med gravitation
 //    Välja dansmatta
+//    Långsammare rotation
+//    Mycket snabbare inbromsning

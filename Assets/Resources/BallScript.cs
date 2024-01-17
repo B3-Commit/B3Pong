@@ -112,6 +112,7 @@ public class Ball : MonoBehaviour
         // Save last touch
         if (collision.gameObject.TryGetComponent<PlayerScript>(out PlayerScript player))
         {
+            player.resetDrag();
             lastTouch = player;
         }
     }
