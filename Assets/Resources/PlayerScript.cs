@@ -26,8 +26,8 @@ public class PlayerScript : MonoBehaviour
     public const float PADDLE_ROTATION_SPEED = 300.0f;
     public const float PADDLE_SPEED = 7.0f;
     public const float Y_POSITION_LIMIT = 4.8f;
-    public const float POWER_UP_SIZE_INCR = 0.2f; // 20 %
-    public const float PADDLE_SIZE_RESTORE_TIME = 40f; // seconds
+    public const float POWER_UP_SIZE_INCR = 0.5f; // 20 %
+    public const float PADDLE_SIZE_RESTORE_TIME = 20f; // seconds
     public const float DEFAULT_SIZE_RECTANGLE = 1.5f;
     public const float DEFAULT_SIZE_ELLIPS = 0.35f;
 

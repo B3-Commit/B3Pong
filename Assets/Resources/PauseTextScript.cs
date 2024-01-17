@@ -21,3 +21,9 @@ public class ControlsTextScript : FadingText
     {
     }
 }
+
+
+//TODO fixa puase 2 text
+//    lägre defaulttempo
+//    visuellt med gravitation
+//    Välja dansmatta

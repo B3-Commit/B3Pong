@@ -74,7 +74,7 @@ public class SettingsManagerScript : MonoBehaviour
         // Toggle music and effects
         if (Input.GetKeyDown(KeyCode.M))
         {
-            AudioManager.Instance.SetMasterVolume(0f);
+            AudioManager.Instance.ToggleMute();
         }
     }
 

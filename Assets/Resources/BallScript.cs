@@ -42,14 +42,12 @@ public class Ball : MonoBehaviour
 
         BallEnlargePowerUp.BallEnlargePickup += OnBallEnlargePickup;
         GravityPowerUp.GravityPickup += OnGravityPickup;
-        SlowMotionManager.SlowMotionActive += OnSlowMotionActive;
     }
 
     private void OnDestroy()
     {
         BallEnlargePowerUp.BallEnlargePickup -= OnBallEnlargePickup;
         GravityPowerUp.GravityPickup -= OnGravityPickup;
-        SlowMotionManager.SlowMotionActive -= OnSlowMotionActive;
     }
 
     void Update()
@@ -70,18 +68,18 @@ public class Ball : MonoBehaviour
         // To avoid energy loss, there needs to be a minimum velocity
         float timeScaler = 2f;
         var speed = rigidBody.velocity.magnitude;
-        if (!useGravity && m_accelerationEnabled && speed < currentMinimumSpeed)
+        if (!useGravity && speed < currentMinimumSpeed)
         {
-            rigidBody.velocity += rigidBody.velocity * Time.deltaTime * timeScaler;
+            rigidBody.velocity *= currentMinimumSpeed / speed;
         }
 
         // There also needs to be a minimum x-velocity for the sake of the gameplay
-        if (m_accelerationEnabled && System.Math.Abs(rigidBody.velocity.x) < currentMinimumSpeed / 2.0f)
+        float currentMinimumXSpeed = currentMinimumSpeed / 2.0f;
+        float currentXVelocity = rigidBody.velocity.x;
+        if (System.Math.Abs(currentXVelocity) < currentMinimumXSpeed)
         {
-            var speedDelta = Mathf.Sign(rigidBody.velocity.x) * Time.deltaTime * timeScaler;
-            rigidBody.velocity = new Vector2(
-                rigidBody.velocity.x + speedDelta,
-                rigidBody.velocity.y);
+            float newXSpeed = currentXVelocity > 0 ? currentMinimumXSpeed : -currentMinimumXSpeed;
+            rigidBody.velocity = new Vector2(newXSpeed, rigidBody.velocity.y);
         }
 
         if (useGravity)
