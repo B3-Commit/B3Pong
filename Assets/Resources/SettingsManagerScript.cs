@@ -60,7 +60,16 @@ public class SettingsManagerScript : MonoBehaviour
         // Pause functionality
         if (Input.GetKeyDown(KeyCode.P))
         {
-            TogglePause();
+            if (isPaused)
+            {
+                // If the game is paused, start the countdown to unpause
+                UnpauseWithCountdown();
+            }
+            else
+            {
+                TriggerPause(true);
+                // If the game is not paused, pause the game
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -116,17 +125,6 @@ public class SettingsManagerScript : MonoBehaviour
             TriggerPause(false);
         }
     }
-
-    private void ResetGame()
-    {
-        GameManagerScript.Instance.OnNewGameEvent();
-    }
-
-    private void TogglePause()
-    {
-        TriggerPause(!isPaused);
-    }
-
     public void TriggerPause(bool pause)
     {
         if (pause == isPaused) return;
@@ -162,4 +160,10 @@ public class SettingsManagerScript : MonoBehaviour
     }
 
     public bool IsPaused() { return isPaused; }
+
+    private void ResetGame()
+    {
+        GameManagerScript.Instance.OnNewGameEvent();
+    }
+
 }
