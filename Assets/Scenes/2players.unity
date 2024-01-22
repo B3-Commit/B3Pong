@@ -2869,7 +2869,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\n\n\u200A\u200AP\u200A:\u200APause/Unpause\nM\u200A:\u200AMute/Unmute"
+  m_text: "\u200AP\u200A\u200A:\u200APause/Unpause\nM\u200A:\u200AMute/Unmute\nR\u200A\u200A:\u200AReset
+    Game"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

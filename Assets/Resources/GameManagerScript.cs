@@ -104,7 +104,7 @@ public class GameManagerScript : MonoBehaviour
         UpdateScoreBoard();
     }
 
-    void OnNewGameEvent()
+    public void OnNewGameEvent()
     {
         if (SettingsManagerScript.instance.IsPaused())
         {

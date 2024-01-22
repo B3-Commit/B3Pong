@@ -56,6 +56,10 @@ public class SettingsManagerScript : MonoBehaviour
         {
             ballSpeedAsPercent = ballGameObj.GetComponent<Ball>().ChangeBallSpeed(false);
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetGame();
+        }
 
         // Pause functionality
         if (Input.GetKeyDown(KeyCode.P))
@@ -71,7 +75,12 @@ public class SettingsManagerScript : MonoBehaviour
         }
     }
 
-    public void TriggerPause(bool pause)
+    private void ResetGame()
+    {
+        GameManagerScript.Instance.OnNewGameEvent();
+    }
+
+public void TriggerPause(bool pause)
     {
         if (pauseTextGameObj == null)
         {
