@@ -1,27 +1,19 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-// Explanation for paddle size decrease:
-// There are currently two players and two types of power up, meaning that every player
-// will get an increase every forth powerup, currently every 20 seconds. To make the
-// paddles increase with time over the game, the paddles should restore in
-// PADDLE_SIZE_RESTORE_TIME. That means that every update, we should reduce
-// the size with POWER_UP_SIZE_INCR * deltaTime / PADDLE_SIZE_RESTORE_TIME at each update;
 
+public enum PlayerId
+{
+    NONE = -1,
+    LEFT = 0,
+    RIGHT = 1,
+}
 
 public class PlayerScript : MonoBehaviour
 {
     public string playerName;
-    public int playerId = -1;
-    public int gamepadId = 0;
-
-    public Key up = Key.UpArrow;
-    public Key down = Key.DownArrow;
-    public Key left = Key.LeftArrow;
-    public Key right = Key.RightArrow;
+    public PlayerId playerId = PlayerId.NONE;
 
     public const float PADDLE_ROTATION_SPEED = 200.0f;
     public const float PADDLE_SPEED = 7.0f;
@@ -45,11 +37,17 @@ public class PlayerScript : MonoBehaviour
     private float pressTimeUpDown = 0.0f;
     private float pressTimeLeftRight = 0.0f;
 
+    private IController activeController;
+    private IController keyboardController;
+    private IController joystickController;
+
     // Start is called before the first frame update
     void Start()
     {
         Debug.Assert(playerName != null);
-        Debug.Assert(playerId != -1);
+        Debug.Assert(playerId != PlayerId.NONE);
+        keyboardController = new KeyboardController(playerId);
+        joystickController = JoystickController.Create(playerId);
 
         PaddleEnlargePowerUp.PaddleEnlargePickup += OnPaddleEnlargePickup;
         RoundedPaddlePowerUp.RoundedPaddlePickup += OnRoundedPaddlePickup;
@@ -63,6 +61,27 @@ public class PlayerScript : MonoBehaviour
         polyCollider.SetPath(0, Utilities.GetEllipseVectorPoints());
         polyCollider.enabled = false;
     }
+
+    IController GetActiveController()
+    {
+
+        if (keyboardController.IsUpPressed())
+        {
+            return keyboardController;
+        }
+        else if (joystickController != null && joystickController.IsUpPressed())
+        {
+            return joystickController;
+        }
+        //else if (gamepadController != null && gamepadController.IsUpPressed())
+        //{
+        //    activeController = gamepadController;
+        //    upPressed = true;
+        //}
+
+        return null;
+    }
+
     private void OnDestroy()
     {
         PaddleEnlargePowerUp.PaddleEnlargePickup -= OnPaddleEnlargePickup;
@@ -72,6 +91,14 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If activeController is not set, keep waiting for an input to set it
+        if (activeController == null)
+        {
+            // If any available controller presses up, that is now the active controller
+            activeController = GetActiveController();
+            return;
+        }
+
         if (paddleSizeRatioFromPowerUps > 1)
         {
             // Shrink back towards normal size
@@ -83,39 +110,10 @@ public class PlayerScript : MonoBehaviour
 
         var rigidBody = GetComponent<Rigidbody2D>();
 
-        var gamepad = Gamepad.all.ElementAtOrDefault(gamepadId);
-        var keyboard = Keyboard.current;
-        Joystick joystick = Joystick.all.ElementAtOrDefault(gamepadId);
-
-
-        bool rightPressed = false;
-        bool downPressed = false;
-        bool upPressed = false;
-        bool leftPressed = false;
-
-        if (joystick != null)
-        {
-            leftPressed = joystick.allControls[1].IsActuated() || joystick.allControls[7].IsActuated() || joystick.allControls[6].IsActuated();
-            downPressed = joystick.allControls[2].IsActuated() || joystick.allControls[6].IsActuated() || joystick.allControls[5].IsActuated();
-            upPressed = joystick.allControls[3].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[7].IsActuated();
-            rightPressed = joystick.allControls[4].IsActuated() || joystick.allControls[8].IsActuated() || joystick.allControls[5].IsActuated();
-        }
-        if (gamepad != null)
-        {
-            var move = gamepad.rightStick.ReadValue();
-            rightPressed |= move.x > 0.2f;
-            leftPressed |= move.x < -0.2f;
-            upPressed |= move.y > 0.2f;
-            downPressed |= move.y < -0.2f;
-
-        }
-        if (keyboard != null)
-        {
-            rightPressed |= keyboard[right].isPressed;
-            leftPressed |= keyboard[left].isPressed;
-            upPressed |= keyboard[up].isPressed;
-            downPressed |= keyboard[down].isPressed;
-        }
+        bool rightPressed = activeController.IsRightPressed();
+        bool leftPressed = activeController.IsLeftPressed();
+        bool upPressed = activeController.IsUpPressed();
+        bool downPressed = activeController.IsDownPressed();
 
         rigidBody.velocity = new Vector3(
             0.0f,
@@ -163,6 +161,11 @@ public class PlayerScript : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -Y_POSITION_LIMIT, Y_POSITION_LIMIT), 0);
     }
 
+    public bool IsUpPressed()
+    {
+        return activeController != null && activeController.IsUpPressed();
+    }
+
     public void resetDrag()
     {
         var rigidBody = GetComponent<Rigidbody2D>();
@@ -171,7 +174,7 @@ public class PlayerScript : MonoBehaviour
         rigidBody.drag = BALL_CONTACT_DRAG;
     }
 
-    private void OnPaddleEnlargePickup(int playerId)
+    private void OnPaddleEnlargePickup(PlayerId playerId)
     {
         if (playerId != this.playerId) { return; }
         paddleSizeRatioFromPowerUps += POWER_UP_SIZE_INCR;
@@ -179,7 +182,7 @@ public class PlayerScript : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, newY, 0);
     }
 
-    private void OnRoundedPaddlePickup(int playerId)
+    private void OnRoundedPaddlePickup(PlayerId playerId)
     {
         if (playerId != this.playerId) { return; }
         TurnIntoEllipse();

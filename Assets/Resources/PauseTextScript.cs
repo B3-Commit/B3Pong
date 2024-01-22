@@ -8,12 +8,15 @@ using UnityEngine;
 public class ControlsTextScript : FadingText
 {
     // Start is called before the first frame update
+    override protected void Awake()
+    {
+        base.Awake();
+    }
     override protected void Start()
     {
 
         base.Start();
         Debug.Assert(!string.IsNullOrEmpty(textMesh.text), "Controls text empty");
-        base.TriggerAndFade();
     }
 
     // Update is called once per frame
@@ -21,11 +24,3 @@ public class ControlsTextScript : FadingText
     {
     }
 }
-
-
-// TODO
-//    fixa pause 2 text
-//    visuellt med gravitation
-//    Välja dansmatta
-//    Långsammare rotation
-//    Mycket snabbare inbromsning

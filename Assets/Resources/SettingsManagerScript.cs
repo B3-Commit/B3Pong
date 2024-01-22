@@ -23,7 +23,7 @@ public class SettingsManagerScript : MonoBehaviour
     float timeScale;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -46,10 +46,6 @@ public class SettingsManagerScript : MonoBehaviour
             ballGameObj = GameObject.Find("Ball");
             ballGameObj.GetComponent<Ball>().ChangeBallSpeed(ballSpeedAsPercent);
         }
-        if (ballSpeedTextGameObj == null)
-        {
-            ballSpeedTextGameObj = GameObject.Find("BallSpeedText");
-        }
 
         if (Input.GetKeyDown(KeyCode.KeypadPlus))
         {
@@ -64,16 +60,8 @@ public class SettingsManagerScript : MonoBehaviour
         // Pause functionality
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (pauseTextGameObj == null)
-            {
-                pauseTextGameObj = GameObject.Find("PauseText");
-            }
-            if (pauseText2GameObj == null)
-            {
-                pauseText2GameObj = GameObject.Find("PauseText2");
-            }
 
-            TogglePause();
+            TriggerPause(!isPaused);
         }
 
         // Toggle music and effects
@@ -83,13 +71,26 @@ public class SettingsManagerScript : MonoBehaviour
         }
     }
 
-    private void TogglePause()
+    public void TriggerPause(bool pause)
     {
+        if (pauseTextGameObj == null)
+        {
+            pauseTextGameObj = GameObject.Find("PauseText");
+        }
+        if (pauseText2GameObj == null)
+        {
+            pauseText2GameObj = GameObject.Find("PauseText2");
+        }
+        if (ballSpeedTextGameObj == null)
+        {
+            ballSpeedTextGameObj = GameObject.Find("BallSpeedText");
+        }
+
         var pauseScript = pauseTextGameObj.GetComponent<ControlsTextScript>();
         var pauseScript2 = pauseText2GameObj.GetComponent<ControlsTextScript>();
         var ballSpeedScript = ballSpeedTextGameObj.GetComponent<BallSpeedTextScript>();
 
-        isPaused = !isPaused;
+        isPaused = pause;
         if (isPaused)
         {
             // Pause game

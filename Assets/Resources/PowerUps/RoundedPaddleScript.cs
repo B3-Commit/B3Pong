@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RoundedPaddlePowerUp : PowerUp
 {
-    public static Action<int> RoundedPaddlePickup;
+    public static Action<PlayerId> RoundedPaddlePickup;
 
     public static GameObject Create(Vector3 pos, Transform parent)
     {

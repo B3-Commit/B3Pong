@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PaddleEnlargePowerUp : PowerUp
 {
-    public static Action<int> PaddleEnlargePickup;
+    public static Action<PlayerId> PaddleEnlargePickup;
 
     public static GameObject Create(Vector3 pos, Transform parent)
     {

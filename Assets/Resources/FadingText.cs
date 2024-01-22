@@ -10,15 +10,18 @@ public class FadingText : MonoBehaviour
     public TextMeshProUGUI textMesh;
     public const float fadeDuration = 1.0f;
 
-    // Start is called before the first frame update
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         // If textMesh is not set in the editor, use GetComponent to initialize it
         if (textMesh == null)
         {
             textMesh = GetComponent<TextMeshProUGUI>();
         }
+    }
 
+    // Start is called before the first frame update
+    protected virtual void Start()
+    {
         gameObject.SetActive(true);
     }
 

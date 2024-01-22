@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -18,10 +16,14 @@ public class GameManagerScript : MonoBehaviour
         [HideInInspector]
         public int score = 0;
     }
+    public GameObject leftPlayer;
+    public GameObject rightPlayer;
+    public GameObject gameStartTextGameObj;
     public GameObject gameEndTextGameObj;
 
     public int maxScore = 5;
     public List<PlayerScore> playerScores;
+    bool isGameStarted = false;
     bool isGameResetting = false;
     bool isGoalAllowed = true;
     bool reloadSceneOnUnpause = false;
@@ -40,6 +42,25 @@ public class GameManagerScript : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+            // Pause game until both players ready
+            SettingsManagerScript.instance.TriggerPause(true);
+    }
+
+    private void Update()
+    {
+        if (!isGameStarted
+            && leftPlayer.GetComponent<PlayerScript>().IsUpPressed()
+            && rightPlayer.GetComponent<PlayerScript>().IsUpPressed())
+        {
+            isGameStarted = true;
+            Destroy(gameStartTextGameObj);
+
+            SettingsManagerScript.instance.TriggerPause(false);
         }
     }
 
@@ -65,14 +86,14 @@ public class GameManagerScript : MonoBehaviour
         if (isGameResetting) return;
         if (!isGoalAllowed) return;
 
-        playerScores[player.playerId].score++;
+        playerScores[(int)player.playerId].score++;
 
         isGoalAllowed = false;
 
         // Shake cameras
         StartCoroutine(Camera.main.GetComponent<ShakeAnimation>().Shake());
 
-        if (playerScores[player.playerId].score >= maxScore)
+        if (playerScores[(int)player.playerId].score >= maxScore)
         {
             gameEndTextGameObj.GetComponent<TextMeshProUGUI>().text = String.Format("{0} won", player.playerName);
 

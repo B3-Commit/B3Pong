@@ -28,16 +28,10 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        var rigidBody = GetComponent<Rigidbody2D>();
 
         currentMinimumSpeed = DEFAULT_MINIMUM_SPEED * speedAsPercent / 100;
         currentMaximumSpeed = DEFAULT_MAXIMUM_SPEED * speedAsPercent / 100;
 
-        float x = Random.Range(0, 2) == 0 ? -currentMinimumSpeed : currentMinimumSpeed;
-        float y = 0.01f * (float)Random.Range(0, 100 * currentMinimumSpeed);
-
-        rigidBody.velocity = new Vector2(x, y);
-        defaultMass = rigidBody.mass;
         ToggleGravity(false);
 
         BallEnlargePowerUp.BallEnlargePickup += OnBallEnlargePickup;
@@ -50,8 +44,24 @@ public class Ball : MonoBehaviour
         GravityPowerUp.GravityPickup -= OnGravityPickup;
     }
 
+    private void SetInitialVelocity()
+    {
+        var rigidBody = GetComponent<Rigidbody2D>();
+        float x = Random.Range(0, 2) == 0 ? -currentMinimumSpeed : currentMinimumSpeed;
+        float y = 0.01f * (float)Random.Range(0, 100 * currentMinimumSpeed);
+        rigidBody.velocity = new Vector2(x, y);
+
+        defaultMass = rigidBody.mass;
+
+    }
+
     void Update()
     {
+        if (GetComponent<Rigidbody2D>().velocity.magnitude == 0)
+        {
+            SetInitialVelocity();
+        }
+
         if (Input.GetKeyDown(KeyCode.G))
         {
             ToggleGravity(!useGravity);
