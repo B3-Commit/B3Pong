@@ -54,8 +54,9 @@ public class GameManagerScript : MonoBehaviour
     private void Update()
     {
         if (!isGameStarted
-            && leftPlayer.GetComponent<PlayerScript>().IsUpPressed()
-            && rightPlayer.GetComponent<PlayerScript>().IsUpPressed())
+            && (leftPlayer.GetComponent<PlayerScript>().IsUpPressed()
+                && rightPlayer.GetComponent<PlayerScript>().IsUpPressed())
+               || Input.GetKeyDown(KeyCode.T))
         {
             isGameStarted = true;
             Destroy(gameStartTextGameObj);

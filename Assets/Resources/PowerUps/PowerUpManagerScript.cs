@@ -8,6 +8,8 @@ public class PowerUpManagerScript : MonoBehaviour
     public const float X_RANGE_MAX = 450;
     public const float TIME_INTERVAL = 5f;
 
+    private Coroutine coroutine;
+
     public enum PowerUpType
     {
         PaddleEnlarge = 0,
@@ -34,7 +36,16 @@ public class PowerUpManagerScript : MonoBehaviour
         }
 
         // Trigger a timer for power-ups
-        StartCoroutine(CreatePowerUp());
+        coroutine = StartCoroutine(CreatePowerUp());
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            StopCoroutine(coroutine);
+        }
+
     }
 
     IEnumerator CreatePowerUp()

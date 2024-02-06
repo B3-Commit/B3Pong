@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -55,11 +54,25 @@ public class Ball : MonoBehaviour
 
     }
 
+    private void SetTestVelocity()
+    {
+        var rigidBody = GetComponent<Rigidbody2D>();
+        float x = currentMaximumSpeed;
+        float y = 0;
+        rigidBody.velocity = new Vector2(x, y);
+        Debug.Log($"{x} {y} {Input.GetKeyDown(KeyCode.T)}");
+    }
+
     void Update()
     {
         if (GetComponent<Rigidbody2D>().velocity.magnitude == 0)
         {
             SetInitialVelocity();
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SetTestVelocity();
         }
 
         if (Input.GetKeyDown(KeyCode.G))
